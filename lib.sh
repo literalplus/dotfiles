@@ -36,6 +36,17 @@ function movelineup () {
   echo -e -n "\033[1A\r"
 }
 
+function exitifnok () {
+  read choice
+  movelineup
+  if [ "$choice" = "y" ]; then
+    psuc ""
+  else
+    perr ""
+    exit 1
+  fi
+}
+
 function applyln () {
   TEMPLATE="$(realpath $1)"
   TARGET="$(realpath $2)"
@@ -82,6 +93,45 @@ function applycp () {
     fi
   else
     perr "$TARGET_RAW do be something else tho"
+  fi
+}
+
+function confirmbefore () {
+  $COMMAND=$@
+  pask "Please confirm: $@ (yes/EXIT/skip)"
+  read choice
+  movelineup
+  if [ "$choice" = "yes" ]; then
+    psuc ""
+    if [ -z "$DRY_RUN" ]; then
+      bash -c "$@"
+      if [ "$?" -ne 0 ]; then
+        perr "Command failed with status code $?"
+        exit 1
+      fi
+    fi
+  elif [ "$choice" = "skip" ]; then
+    pwrn "Skipping:      "
+  else
+    perr ""
+    exit 1
+  fi
+}
+
+function destcmd () {
+  pnot "$@"
+  if [ -z "$DRY_RUN" ]; then
+    bash -c "$@"
+    RET=$?
+    if [ "$RET" -ne 0 ]; then
+      perr "Process exited with code $RET"
+      exit 1
+    else
+      return $RET
+    fi
+  else
+    movelinup
+    echo "(dry)"
   fi
 }
 

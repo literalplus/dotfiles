@@ -1,20 +1,28 @@
 #!/usr/bin/env bash
 source lib.sh
 
+if [ -z "$DRY_RUN" ]; then
+  pwrn "NOT doing a dry run!"
+else if [ -n "$DRY_RUN" ]; then
+  pnot "Doing a dry run! :)"
+else
+  perr "Doing a dry run but also not. lol"
+  exit 1
+fi
+
 if [ "$(id -u)" -ne 0 ]; then
   perr "We need root for this!"
   exit 1
 fi
 
 if [ -z "$TMUX" ]; then
-  pwrn "It is recommended to run the setup in tmux!"
-  pwrn "Really continue? (y/N)"
-  exitifnok
+  pwrn "It is required to run the setup in tmux!"
+  exit 1
 fi
 
 
 psec "Environment setup"
-loadkeys de-latin1-nodeadkeys
+destcmd loadkeys de-latin1-nodeadkeys
 
 if [ ! -d /sys/firmware/efi/efivars ]; then
   pwrn "Not booted as EFI system!"
@@ -29,29 +37,93 @@ undim
 exitifnok
 
 pnot "Enabling NTP..."
-timedatectl set-ntp true
+destcmd timedatectl set-ntp true
+pnot "Installing build dependencies..."
+destcmd pacman -S fzf pacman-contrib
 
 psec "Partitioning the disks"
 dim
 fdisk -l
+lsblk
 undim
 echo "Please partition the disks."
 pnot "Recommended layout (gdisk):"
 pnot " (1) 512M EFI system & boot partition EF00"
 pnot " (2) remaining space 8300"
 pnot " (3) 4G cryptswap placeholder (if needed) 8300"
+pnot "If encrypting existing data, consider wiping the drives."
 pnot "# gdisk /dev/sdX (Ctrl-D when done)"
+pnot "Press n for a new partition, ? for help"
 bash
 
-psec "Format partitions"
-echo "Please format the partitions."
-pnot "Recommended setup:"
-pnot " (1) mkfs.fat -F32 \$EFI_SYS"
-pnot " todo"
+ALLDISKS=$(fdisk -l | grep /dev/ | grep -v "Disk /dev/")
+FZF_DEFAULT_OPTS="--reverse --height=10"
+EFI_PART=$(echo "$ALLDISKS" | fzf --header="EFI system partition")
+if [ "$?" -ne 0 ]; then
+  perr "Aborted."
+  exit 1
+else
+  EFI_PART=$(echo "$EFI_PART" | awk '{print $1}')
+  psuc "EFI system partition: $EFI_PART"
+fi
 
-# TODO https://wiki.archlinux.org/index.php/Installation_guide
-# TODO https://wiki.archlinux.org/index.php/Dm-crypt/Encrypting_an_entire_system
-# TODO https://wiki.archlinux.org/index.php/Arch_boot_process#Boot_loader
-# TODO https://wiki.archlinux.org/index.php/EFI_system_partition
-# TODO https://wiki.archlinux.org/index.php/Microcode
-# TODO https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption
+ROOT_PART=$(echo "$ALLDISKS" | fzf --header="Encrypted root partition")
+if [ "$?" -ne 0 ]; then
+  perr "Aborted."
+  exit 1
+else
+  ROOT_PART=$(echo "$ROOT_PART" | awk '{print $1}')
+  psuc "Encrypted root partition: $ROOT_PART"
+  ROOT_PARTID=$(blkid "$ROOT_PART" -s UUID -o value)
+  pnot "Found UUID: $ROOT_PARTID (y/N)"
+  exitifnok
+fi
+
+SWAP_PART=$(echo "$ALLDISKS" | fzf --header="Encrypted swap partition")
+if [ "$?" -ne 0 ]; then
+  perr "Aborted."
+  exit 1
+else
+  SWAP_PART=$(echo "$SWAP_PART" | awk '{print $1}')
+  psuc "Encrypted swap partition: $SWAP_PART"
+fi
+
+
+psec "Format partitions"
+
+confirmbefore mkfs.fat -F32 "$EFI_PART"
+confirmbefore cryptsetup -y -v luksFormat "$ROOT_PART"
+confirmbefore cryptsetup open "$ROOT_PART" cryptroot
+confirmbefore mkfs.ext4 /dev/mapper/cryptroot
+confirmbefore mkdir -p /mnt \
+  \&\& mount /dev/mapper/cryptroot /mnt
+confirmbefore mkdir -p /mnt/boot \
+  \&\& mount "$EFI_PART" /mnt/boot
+
+psec "Actual installation"
+MIRRORS="/etc/pacman.d/mirrorlist"
+if [ -n "$DRY_RUN" ]; then
+  cp /etc/pacman.d/mirrorlist /tmp/mirrorlist
+  MIRRORS="/tmp/mirrorlist"
+fi
+MIRRORSWAP="$MIRRORS.rankinstall"
+cp "$MIRRORS" "$MIRRORS.backup"
+curl -s "https://www.archlinux.org/mirrorlist/?country=AT&country=CZ&country=DE&country=SK&country=SI&protocol=https&ip_version=4&use_mirror_status=on" >"$MIRRORSWAP"
+pnot "Mirror list backup placed at $MIRRORS.backup"
+sed -i 's/^#Server/Server/' "$MIRRORSWAP"
+confirmbefore rankmirrors -n 6 "$MIRRORSWAP" \> "$MIRRORS"
+dim
+cat "$MIRRORS"
+undim
+
+destcmd pacstrap /mnt base linux linux-firmware vim fzf zsh sudo
+
+psec "Configure the system"
+destcmd genfstab -U /mnt \>\> /mnt/etc/fstab
+
+confirmbefore arch-chroot /mnt $PWD/chrootsetup.sh
+
+psec "Reboot"
+pnot "It is time to make broccoli!"
+destcmd umount -R /mnt
+
