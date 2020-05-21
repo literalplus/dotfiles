@@ -8,6 +8,7 @@ fi
 
 # Base
 applyln "~~FINDER_README~~.txt" "$HOME/~~FINDER_README~~.txt"
+applyln "base/tmux.conf" "$HOME/.tmux.conf"
 
 # Coding tools
 applycp "code/gitconfig-tpl" "$HOME/.gitconfig"
