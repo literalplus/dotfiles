@@ -1,0 +1,92 @@
+#!/bin/bash
+
+if [[ $# -eq 0 ]]; then
+  echo "Usage:"
+  echo " intelctl max <max>        - Sets max CPU percentage."
+  echo " intelctl min <min>        - Sets min CPU percentage."
+  echo " intelctl both <min> <max> - Sets both limits."
+  echo " intelctl turbo <on|off>   - Enables/Disables turbo."
+  echo " intelctl status           - Shows status."
+  exit 0
+fi
+
+CONTROL_PATH="/sys/devices/system/cpu/intel_pstate"
+MAX_PATH="$CONTROL_PATH/max_perf_pct"
+MIN_PATH="$CONTROL_PATH/min_perf_pct"
+NO_TURBO_PATH="$CONTROL_PATH/no_turbo"
+
+function showStatus {
+  MAX=$(cat "$MAX_PATH")
+  MIN=$(cat "$MIN_PATH")
+  NO_TURBO_RAW=$(cat $NO_TURBO_PATH)
+  TURBO_TEXT="on"
+  if [[ $NO_TURBO_RAW -eq 1 ]]; then
+    TURBO_TEXT="off"
+  fi
+  
+  echo "intelctl: CPU State limits: $MIN < actual < $MAX (Turbo $TURBO_TEXT)"
+}
+
+function requireArgs {
+  if [[ $# -eq $1 ]]; then
+    echo "intelctl: Need exactly $1 parameters. Try just intelctl for usage."
+    exit 1
+  fi
+}
+
+function setDirectly {
+  if [[ $UID -ne 0 ]]; then
+    echo "intelctl: Cannot set $3 when not root!"
+  else
+    echo $1 >$2
+    echo "intelctl: Set $3 to $1."
+  fi
+}
+
+function parseTurboValue {
+  # returns the value for no_turbo, aka the opposite of the argument
+  case $1 in
+  on)
+    echo "0"
+    ;;
+  off)
+    echo "1"
+    ;;
+  *)
+    echo "intelctl: Invalid turbo value: $1"
+    echo "intelctl: Allowed values: [on, off]"
+    exit 1
+    ;;
+  esac
+}
+
+case $1 in
+max)
+  requireArgs 2
+  setDirectly $2 $MAX_PATH "upper bound"
+  showStatus
+  ;;
+min)
+  requireArgs 2
+  setDirectly $2 $MIN_PATH "lower bound"
+  showStatus
+  ;;
+both)
+  requireArgs 3
+  setDirectly $2 $MIN_PATH "lower bound"
+  setDirectly $3 $MAX_PATH "upper bound"
+  showStatus
+  ;;
+turbo)
+  requireArgs 2
+  NO_TURBO_VAL=$(parseTurboValue $2)
+  setDirectly $NO_TURBO_VAL $NO_TURBO_PATH "no_turbo"
+  showStatus
+  ;;
+status)
+  showStatus
+  ;;
+*)
+  echo "Unknown action $1. Try just intelctl for usage."
+  ;;
+esac

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if [[ $# -lt 1 ]]; then
+  echo "screenwrap-open <save-basedir> <application> [options for backend]"
+  echo "  e.g.: screenwrap-open /tmp/ viewnior -a"
+  echo "    opens new area screenshot in Viewnior, saved in /tmp with datetime"
+  echo "  see gnome-screenshot --help for available options."
+  exit 1
+fi
+
+BASE_PATH="${1%/}" # strip trailing slashes
+DATED_DIR="$(date +%Y/%m)"
+DIR_PATH="$BASE_PATH""/""$DATED_DIR"
+OPEN_APP="$2"
+FILE_PATH="$DIR_PATH""/""$(date +%Y-%m-%d_%H:%M:%S.png)"
+
+mkdir -p "$DIR_PATH"
+gnome-screenshot -f "$FILE_PATH" "${@:3}"
+
+if [[ -f $FILE_PATH ]]; then
+  "$OPEN_APP" "$FILE_PATH"
+else
+  echo "screenwrap-open: gnome-screenshot did not create the file."
+  echo "  Did you abort the operation?"
+  echo "  File: $FILE_PATH"
+  exit 2
+fi
