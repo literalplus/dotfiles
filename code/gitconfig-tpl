@@ -1,0 +1,8 @@
+[include]
+	path = dotfiles/code/gitconfig-lib
+
+[user]
+	signingkey = 395BA45245A98A3FBA036FF37BE463C902ED152C
+	name = Philipp Nowak
+	email = git@lit.plus
+

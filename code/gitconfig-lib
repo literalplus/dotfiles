@@ -1,0 +1,14 @@
+[commit]
+	gpgsign = true
+[credential]
+	helper = libsecret
+[core]
+	autocrlf = input
+[rebase]
+	autoSquash = true
+[merge]
+	tool = kdiff3
+[alias]
+	cleanup = "!git branch --merged | grep -v '^  master$' | grep -v '^  development$' | grep -v '^* ' | xargs git branch -d"
+	force-cleanup = "!git branch | grep -v '^  master$' | grep -v '^  master$' | grep -v '^* ' | xargs git branch -d"
+	klaus = "git push --force-with-lease"
