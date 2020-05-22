@@ -121,7 +121,7 @@ dim
 cat "$MIRRORS"
 undim
 
-destcmd pacstrap /mnt base linux linux-firmware vim fzf zsh sudo which git nftables iptables-nft base-devel
+destcmd pacstrap /mnt base linux linux-firmware vim fzf zsh sudo which git nftables iptables-nft base-devel tmux
 
 psec "Configure the system"
 destcmd genfstab -U /mnt \>\> /mnt/etc/fstab
