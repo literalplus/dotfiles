@@ -85,7 +85,7 @@ fi
 
 psec "Boot loader (Part I)"
 confirmbefore bootctl install \
-  \&\& yay -Sy --needed systemd-boot-pacman-hook
+  \&\& sudo -u "$un" yay -Sy --needed systemd-boot-pacman-hook
 
 psec "Encryption setup"
 echo "Please now configure mkinitcpio for encryption."
