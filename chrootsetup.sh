@@ -32,13 +32,17 @@ destcmd sed -i 's/^#en_GB.UTF-8/en_GB.UTF-8/' /etc/locale.gen
 destcmd echo "LANG=en_GB.UTF-8" \>/etc/locale.gen
 destcmd echo "KEYMAP=de-latin1-nodeadkeys" \>/etc/vconsole.conf
 
-pask "What is the hostname of this system?"
-read hn
-pnot "Setting hostname to $hn"
-destcmd echo "$hn" \>/etc/hostname
-destcmd echo "127.0.0.1 localhost" \>/etc/hosts
-destcmd echo "::1 localhost" \>\>/etc/hosts
-destcmd echo "127.0.1.1 $hn" \>\>/etc/hosts
+if [ -f /etc/hostname ]; then
+  pnot "Hostname already set."
+else
+  pask "What is the hostname of this system?"
+  read hn
+  pnot "Setting hostname to $hn"
+  destcmd echo "$hn" \>/etc/hostname
+  destcmd echo "127.0.0.1 localhost" \>/etc/hosts
+  destcmd echo "::1 localhost" \>\>/etc/hosts
+  destcmd echo "127.0.1.1 $hn" \>\>/etc/hosts
+fi
 
 confirmbefore systemctl disable systemd-networkd.service \
   \&\& systemctl disable systemd-resolved.service \
@@ -48,7 +52,7 @@ psec "Setting up user account"
 pask "Setting up sudo for wheel group"
 TMP_SUDOERS=$(mktemp)
 destcmd cp /etc/sudoers "$TMP_SUDOERS"
-destcmd sed -i -e 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' "$TMP_SUDOERS"
+destcmd sed -i -e 's/# %wheel ALL=\(ALL\) ALL/%wheel ALL=\(ALL\) ALL/' "$TMP_SUDOERS"
 if ! visudo -c -f "$TMP_SUDOERS"; then
   perr "Modified sudoers file not longer validates."
   exit 1
