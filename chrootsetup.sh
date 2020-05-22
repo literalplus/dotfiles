@@ -47,7 +47,8 @@ fi
 
 confirmbefore systemctl disable systemd-networkd.service \
   \&\& systemctl disable systemd-resolved.service \
-  \&\& pacman -Sy --needed networkmanager
+  \&\& pacman -Sy --needed networkmanager \
+  \&\& systemctl enable NetworkManager
 
 psec "Setting up user account"
 pask "Setting up sudo for wheel group"
@@ -107,7 +108,7 @@ if [ "$?" -ne 0 ]; then
 else
   ROOT_PART=$(echo "$ROOT_PART" | awk '{print $1}')
   psuc "Encrypted root partition: $ROOT_PART"
-  ROOT_PARTID=$(blkid "$ROOT_PART" -s PARTUUID -o value)
+  ROOT_PARTID=$(blkid "$ROOT_PART" -s UUID -o value)
   pask "Found UUID: $ROOT_PARTID (y/N)"
   exitifnok
 fi
@@ -127,6 +128,10 @@ confirmbefore mkinitcpio -P
 psec "User accounts (Part II)"
 pask "Please set a strong root password."
 destcmd passwd root
+pask "Setting up zsh config"
+sudo -u "$un" -i sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+sudo -u "$un" -i git clone https://github.com/literalplus/dotfiles
+cp /dotfiles/zshrc-tpl /home/$un/.zshrc
 
 
 psec "Firewall"
