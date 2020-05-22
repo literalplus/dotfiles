@@ -13,3 +13,21 @@ Use `archsetup.sh` for Arch Linux setup from archiso.
 Note that the default kernel line allocates no extra space. To change this,
 append `cow_spacesize=1G` to the kernel line when booting.
 
+### Manual steps
+
+ * Install NVIDIA driver
+ * Set up shortcuts in GNOME
+  * Disable default screenshot shortcuts under "Screenshots"
+  * Disable Windows / Move window shortcut
+  * `Super+. -> /usr/local/bin/rofi-emoji`
+  * `Super+C -> sparkle|xsel -ib`
+  * `Audio next -> dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next`
+  * `Audio previous -> dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous`
+  * `Audio play -> dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause`
+  * `Print -> screenwrap-open /tmp/ viewnior -a`
+  * `Shift+Print -> screenwrap-open /home/lit/Screenshots/ -a`
+  * `Super+X -> albert toggle`
+  * `Super+R -> gnome-terminal`
+ * Desktop background
+ * Nextcloud
+ * Telegram

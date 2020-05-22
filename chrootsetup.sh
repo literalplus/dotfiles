@@ -139,6 +139,10 @@ cp /dotfiles/nftables.conf /etc/nftables.conf
 destcmd systemctl enable nftables
 destcmd systemctl start nftables
 
+psec "GUI"
+destcmd pacman -Sy gnome
+destcmd localectl set-x11-keymap de nodeadkeys
+
 
 psec "Exit chroot"
 
