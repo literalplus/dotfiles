@@ -31,11 +31,11 @@ if [ ! -d /sys/firmware/efi/efivars ]; then
   exit 1
 fi
 
-pask "Is the system connected to the internet? (y/N)"
 dim
 ip link
 curl https://ifconfig.pro
 undim
+pask "Is the system connected to the internet? (y/N)"
 exitifnok
 
 pnot "Enabling NTP..."
@@ -77,7 +77,7 @@ else
   ROOT_PART=$(echo "$ROOT_PART" | awk '{print $1}')
   psuc "Encrypted root partition: $ROOT_PART"
   ROOT_PARTID=$(blkid "$ROOT_PART" -s UUID -o value)
-  pnot "Found UUID: $ROOT_PARTID (y/N)"
+  pask "Found UUID: $ROOT_PARTID (y/N)"
   exitifnok
 fi
 

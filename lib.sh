@@ -131,7 +131,7 @@ function destcmd () {
     fi
   else
     movelineup
-    echo "(dry)"
+    echo "dry "
   fi
 }
 
