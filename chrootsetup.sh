@@ -7,7 +7,7 @@ source lib.sh
 
 if [ -z "$DRY_RUN" ]; then
   pwrn "NOT doing a dry run!"
-else if [ -n "$DRY_RUN" ]; then
+elif [ -n "$DRY_RUN" ]; then
   pnot "Doing a dry run! :)"
 else
   perr "Doing a dry run but also not. lol"
