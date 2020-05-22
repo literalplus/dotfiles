@@ -17,7 +17,7 @@ function psec () {
 }
 
 function pask() {
-  echo -e "\e1;35m ?? \e[1;97m""$@""\e[0m"
+  echo -e "\e[1;35m ?? \e[1;97m""$@""\e[0m"
 }
 
 function pnot () {
