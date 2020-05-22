@@ -100,10 +100,10 @@ confirmbefore mkfs.fat -F32 "$EFI_PART"
 confirmbefore cryptsetup -y -v luksFormat "$ROOT_PART"
 confirmbefore cryptsetup open "$ROOT_PART" cryptroot
 confirmbefore mkfs.ext4 /dev/mapper/cryptroot
-confirmbefore mkdir -p /mnt \
-  \&\& mount /dev/mapper/cryptroot /mnt
-confirmbefore mkdir -p /mnt/boot \
-  \&\& mount "$EFI_PART" /mnt/boot
+destcmd mkdir -p /mnt
+confirmbefore mount /dev/mapper/cryptroot /mnt
+destcmd mkdir -p /mnt/boot
+confirmbefore mount "$EFI_PART" /mnt/boot
 
 psec "Actual installation"
 MIRRORS="/etc/pacman.d/mirrorlist"

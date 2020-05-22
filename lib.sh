@@ -105,7 +105,7 @@ function confirmbefore () {
   if [ "$choice" = "yes" ]; then
     psuc ""
     if [ -z "$DRY_RUN" ]; then
-      "$@"
+      eval "$@"
       if [ "$?" -ne 0 ]; then
         perr "Command failed with status code $?"
         exit 1
