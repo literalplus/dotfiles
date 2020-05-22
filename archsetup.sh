@@ -126,7 +126,10 @@ destcmd pacstrap /mnt base linux linux-firmware vim fzf zsh sudo
 psec "Configure the system"
 destcmd genfstab -U /mnt \>\> /mnt/etc/fstab
 
-confirmbefore arch-chroot /mnt $PWD/chrootsetup.sh
+destcmd mkdir -p /mnt/dotfiles
+destcmd cp -r . /mnt/dotfiles
+confirmbefore arch-chroot /mnt /dotfiles/chrootsetup.sh
+destcmd rm -rf /mnt/dotfiles
 
 psec "Reboot"
 pnot "It is time to make broccoli!"
