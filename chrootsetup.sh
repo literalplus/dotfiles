@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+if [ -d /dotfiles ]; then
+  cd /dotfiles
+fi
+
 source lib.sh
 
 if [ -z "$DRY_RUN" ]; then
