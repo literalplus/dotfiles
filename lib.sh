@@ -98,7 +98,6 @@ function applycp () {
 }
 
 function confirmbefore () {
-  $COMMAND="$@"
   pask "Please confirm: $@ (yes/EXIT/skip)"
   read choice
   movelineup
