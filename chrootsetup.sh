@@ -44,21 +44,24 @@ confirmbefore systemctl disable systemd-networkd.service \
   \&\& systemctl disable systemd-resolved.service \
   \&\& pacman -Sy --needed networkmanager
 
-psec "Making sure yay is installed"
-if ! id lit; then
-  pnot "Setting up user account for lit"
-  destcmd useradd -m -s /usr/bin/zsh -G sys,wheel lit
-  pask "Please specify password for lit"
-  destcmd passwd lit
+psec "Setting up user account"
+pask "What is the primary username for this system?"
+read un
+if ! id $un; then
+  pnot "Setting up user account for $un"
+  destcmd useradd -m -s /usr/bin/zsh -G sys,wheel "$un"
+  pask "Please specify password for $un"
+  destcmd passwd "$un"
 fi
+psec "Making sure yay is installed"
 if which yay >/dev/null; then
   pnot "yay is installed"
 else
   mkdir -p build
   pushd build
-  sudo -u lit -i git clone https://aur.archlinux.org/yay.git
+  sudo -u "$un" -i git clone https://aur.archlinux.org/yay.git
   pushd yay
-  sudo -u lit -i makepkg -si
+  sudo -u "$un" -i makepkg -si
   popd
   rm -r yay
   popd
@@ -83,10 +86,9 @@ tmux split-window vim /boot/loader/entries/arch.conf
 confirmbefore cat /boot/loader/entries/arch.conf \| grep options
 confirmbefore mkinitcpio -P
 
-psec "User accounts"
+psec "User accounts (Part II)"
 pask "Please set a strong root password."
 destcmd passwd root
-
 
 psec "Boot loader (Part II)"
 pask "Please edit the boot loader configuration."
