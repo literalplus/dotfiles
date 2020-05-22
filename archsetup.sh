@@ -15,7 +15,7 @@ if [ "$(id -u)" -ne 0 ]; then
   exit 1
 fi
 
-destcmd pacman -Sy tmux
+destcmd pacman -Sy --needed tmux
 
 if [ -z "$TMUX" ]; then
   pwrn "It is required to run the setup in tmux!"
@@ -41,7 +41,7 @@ exitifnok
 pnot "Enabling NTP..."
 destcmd timedatectl set-ntp true
 pnot "Installing build dependencies..."
-destcmd pacman -S fzf pacman-contrib
+destcmd pacman -S --needed fzf pacman-contrib
 
 psec "Partitioning the disks"
 dim
@@ -79,7 +79,7 @@ if [ "$?" -ne 0 ]; then
 else
   ROOT_PART=$(echo "$ROOT_PART" | awk '{print $1}')
   psuc "Encrypted root partition: $ROOT_PART"
-  ROOT_PARTID=$(blkid "$ROOT_PART" -s UUID -o value)
+  ROOT_PARTID=$(blkid "$ROOT_PART" -s PARTUUID -o value)
   pask "Found UUID: $ROOT_PARTID (y/N)"
   exitifnok
 fi
