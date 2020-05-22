@@ -42,12 +42,25 @@ destcmd echo "127.0.1.1 $hn" \>\>/etc/hosts
 
 confirmbefore systemctl disable systemd-networkd.service \
   \&\& systemctl disable systemd-resolved.service \
-  \&\& pacman -Syu networkmanager
+  \&\& pacman -Sy --needed networkmanager
+
+psec "Making sure yay is installed"
+if which yay >/dev/null; then
+  pnot "yay is installed"
+else
+  pushd build
+  git clone https://aur.archlinux.org/yay.git
+  pushd yay
+  makepkg -si
+  popd
+  rm -r yay
+  popd
+fi
 
 
 psec "Boot loader (Part I)"
 confirmbefore bootctl install \
-  \&\& pacman -S systemd-boot-pacman-hook
+  \&\& yay -Sy --needed systemd-boot-pacman-hook
 
 psec "Encryption setup"
 echo "Please now configure mkinitcpio for encryption."
