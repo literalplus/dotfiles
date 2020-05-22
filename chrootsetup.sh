@@ -47,7 +47,7 @@ confirmbefore systemctl disable systemd-networkd.service \
 psec "Making sure yay is installed"
 if ! id lit; then
   pnot "Setting up user account for lit"
-  destcmd useradd -m -s /usr/bin/zsh -aG sys,wheel lit
+  destcmd useradd -m -s /usr/bin/zsh -G sys,wheel lit
   pask "Please specify password for lit"
   destcmd passwd lit
 fi
