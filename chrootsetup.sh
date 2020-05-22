@@ -36,7 +36,9 @@ pask "What is the hostname of this system?"
 read hn
 pnot "Setting hostname to $hn"
 destcmd echo "$hn" \>/etc/hostname
-destcmd echo "127.0.1.1 $hn.localdomain $hn" \>\>/etc/hosts
+destcmd echo "127.0.0.1 localhost" \>\>/etc/hosts
+destcmd echo "::1 localhost" \>\>/etc/hosts
+destcmd echo "127.0.1.1 $hn" \>\>/etc/hosts
 
 confirmbefore systemctl disable systemd-networkd.service \
   \&\& systemctl disabled systemd-resolved.service \
