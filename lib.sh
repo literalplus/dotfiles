@@ -130,7 +130,7 @@ function destcmd () {
       return $RET
     fi
   else
-    movelinup
+    movelineup
     echo "(dry)"
   fi
 }
