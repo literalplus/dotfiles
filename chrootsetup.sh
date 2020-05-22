@@ -51,14 +51,14 @@ confirmbefore systemctl disable systemd-networkd.service \
 psec "Setting up user account"
 pask "Setting up sudo for wheel group"
 TMP_SUDOERS=$(mktemp)
-destcmd cp /etc/sudoers "$TMP_SUDOERS"
-destcmd sed -i -e 's/# %wheel ALL=\(ALL\) ALL/%wheel ALL=\(ALL\) ALL/' "$TMP_SUDOERS"
+cp /etc/sudoers "$TMP_SUDOERS"
+sed -i -e 's/# %wheel ALL=\(ALL\) ALL/%wheel ALL=\(ALL\) ALL/' "$TMP_SUDOERS"
 if ! visudo -c -f "$TMP_SUDOERS"; then
   perr "Modified sudoers file not longer validates."
   exit 1
 fi
-cp /etc/sudoers /etc/sudoers.bkp
-mv "$TMP_SUDOERS" /etc/sudoers
+destcmd cp /etc/sudoers /etc/sudoers.bkp
+destcmd mv "$TMP_SUDOERS" /etc/sudoers
 pask "What is the primary username for this system?"
 read un
 if ! id $un; then
