@@ -99,7 +99,18 @@ psec "Boot loader (Part II)"
 pwrn "This only works on Intel systems! Adapt loader.conf for AMD"
 destcmd pacman -Sy --needed intel-ucode
 
-ROOT_PARTID=$(blkid /dev/mapper/cryptroot -s UUID -o value)
+ALLDISKS=$(fdisk -l | grep /dev/ | grep "Linux filesystem" | grep -v "Disk /dev/")
+ROOT_PART=$(echo "$ALLDISKS" | fzf --header="Encrypted root partition (again)")
+if [ "$?" -ne 0 ]; then
+  perr "Aborted."
+  exit 1
+else
+  ROOT_PART=$(echo "$ROOT_PART" | awk '{print $1}')
+  psuc "Encrypted root partition: $ROOT_PART"
+  ROOT_PARTID=$(blkid "$ROOT_PART" -s PARTUUID -o value)
+  pask "Found UUID: $ROOT_PARTID (y/N)"
+  exitifnok
+fi
 
 KPARAMS="root=/dev/mapper/cryptroot rootfstype=ext4 add_efi_memmap rd.luks.name=$ROOT_PARTID=cryptroot"
 pask "Kernel line: $KPARAMS (y/N)"
