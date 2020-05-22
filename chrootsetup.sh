@@ -48,6 +48,7 @@ psec "Making sure yay is installed"
 if which yay >/dev/null; then
   pnot "yay is installed"
 else
+  mkdir -p build
   pushd build
   git clone https://aur.archlinux.org/yay.git
   pushd yay
