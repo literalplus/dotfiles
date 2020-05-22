@@ -39,6 +39,7 @@ function movelineup () {
 function exitifnok () {
   read choice
   movelineup
+  movelineup
   if [ "$choice" = "y" ]; then
     psuc ""
   else
@@ -101,10 +102,11 @@ function confirmbefore () {
   pask "Please confirm: $@ (yes/EXIT/skip)"
   read choice
   movelineup
+  movelineup
   if [ "$choice" = "yes" ]; then
     psuc ""
     if [ -z "$DRY_RUN" ]; then
-      bash -c "$@"
+      "$@"
       if [ "$?" -ne 0 ]; then
         perr "Command failed with status code $?"
         exit 1
@@ -121,7 +123,7 @@ function confirmbefore () {
 function destcmd () {
   pnot "$@"
   if [ -z "$DRY_RUN" ]; then
-    bash -c "$@"
+    "$@"
     RET=$?
     if [ "$RET" -ne 0 ]; then
       perr "Process exited with code $RET"
