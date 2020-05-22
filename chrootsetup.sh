@@ -95,7 +95,23 @@ echo "HOOKS=(base *systemd autodetect *keyboard *sd-vconsole modconf block *sd-e
 tmux split-window vim /etc/mkinitcpio.conf
 confirmbefore cat /etc/mkinitcpio.conf \| grep HOOKS
 
-KPARAMS="rd.luks.name=$ROOT_PARTID=cryptroot"
+psec "Boot loader (Part II)"
+pwrn "This only works on Intel systems! Adapt loader.conf for AMD"
+destcmd pacman -Sy --needed intel-ucode
+
+ROOT_PARTID=$(blkid /dev/mapper/cryptroot -s UUID -o value)
+
+KPARAMS="root=/dev/mapper/cryptroot rootfstype=ext4 add_efi_memmap rd.luks.name=$ROOT_PARTID=cryptroot"
+pask "Kernel line: $KPARAMS (y/N)"
+exitifnok
+destcmd echo "title Arch Linux" \>/boot/loader/loader.conf
+destcmd echo "linux /vmlinuz-linux" \>\>/boot/loader/loader.conf
+destcmd echo "initrd /intel-ucode.img" \>\>/boot/loader/loader.conf
+destcmd echo "initrd /initramfs-linux.img" \>\>/boot/loader/loader.conf
+destcmd echo "options $KPARAMS" \>\>/boot/loader/loader.conf
+
+confirmbefore cat /boot/loader/loader.conf
+
 pnot "Kernel parameters: $KPARAMS"
 pask "Please add these to the kernel line! (options ...)"
 tmux split-window vim /boot/loader/entries/arch.conf
@@ -106,24 +122,12 @@ psec "User accounts (Part II)"
 pask "Please set a strong root password."
 destcmd passwd root
 
-psec "Boot loader (Part II)"
-pask "Please edit the boot loader configuration."
-pnot "Recommended: Set editor=no to prevent setting kernel line to /bin/bash"
-pnot "default should be arch.conf"
-tmux split-window vim /boot/loader/loader.conf
-confirmbefore cat /boot/loader/loader.conf
 
 psec "Firewall"
 cp /dotfiles/nftables.conf /etc/nftables.conf
 destcmd systemctl enable nftables
 destcmd systemctl start nftables
 
-
-#pask "If this is an Intel system, install microcode."
-#pnot "Add a line 'initrd /cpu_intel-ucode.img' before"
-#pnot "'initrd /initramfs-linux.img'."
-#confirmbefore pacman -S intel-ucode \
-#  \&\& tmux split-window /boot/loader/entries/arch.conf
 
 psec "Exit chroot"
 
