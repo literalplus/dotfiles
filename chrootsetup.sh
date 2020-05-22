@@ -59,9 +59,9 @@ if which yay >/dev/null; then
 else
   mkdir -p build
   pushd build
-  sudo -u "$un" -i git clone https://aur.archlinux.org/yay.git
+  sudo -u "$un" git clone https://aur.archlinux.org/yay.git
   pushd yay
-  sudo -u "$un" -i makepkg -si
+  sudo -u "$un" makepkg -si
   popd
   rm -r yay
   popd
