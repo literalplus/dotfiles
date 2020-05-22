@@ -15,7 +15,7 @@ if [ "$(id -u)" -ne 0 ]; then
   exit 1
 fi
 
-destcmd pacman -Sy tmux
+destcmd pacman -Sy tmux fzf
 
 if [ -z "$TMUX" ]; then
   pwrn "It is required to run the setup in tmux!"
@@ -57,6 +57,9 @@ pnot "If encrypting existing data, consider wiping the drives."
 pnot "# gdisk /dev/sdX (Ctrl-D when done)"
 pnot "Press n for a new partition, ? for help"
 bash
+
+pask "Continue? (y/N)"
+exitifnok
 
 ALLDISKS=$(fdisk -l | grep /dev/ | grep -v "Disk /dev/")
 FZF_DEFAULT_OPTS="--reverse --height=10"
