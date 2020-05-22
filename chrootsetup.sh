@@ -45,14 +45,20 @@ confirmbefore systemctl disable systemd-networkd.service \
   \&\& pacman -Sy --needed networkmanager
 
 psec "Making sure yay is installed"
+if ! id lit; then
+  pnot "Setting up user account for lit"
+  destcmd useradd -m -s /usr/bin/zsh -aG sys,wheel lit
+  pask "Please specify password for lit"
+  destcmd passwd lit
+fi
 if which yay >/dev/null; then
   pnot "yay is installed"
 else
   mkdir -p build
   pushd build
-  git clone https://aur.archlinux.org/yay.git
+  sudo -u lit -i git clone https://aur.archlinux.org/yay.git
   pushd yay
-  makepkg -si
+  sudo -u lit -i makepkg -si
   popd
   rm -r yay
   popd
@@ -81,9 +87,6 @@ psec "User accounts"
 pask "Please set a strong root password."
 destcmd passwd root
 
-destcmd useradd -m -s /usr/bin/zsh -aG sys,wheel lit
-pask "Please specify password for lit"
-destcmd passwd lit
 
 psec "Boot loader (Part II)"
 pask "Please edit the boot loader configuration."

@@ -121,7 +121,7 @@ dim
 cat "$MIRRORS"
 undim
 
-destcmd pacstrap /mnt base linux linux-firmware vim fzf zsh sudo which
+destcmd pacstrap /mnt base linux linux-firmware vim fzf zsh sudo which git
 
 psec "Configure the system"
 destcmd genfstab -U /mnt \>\> /mnt/etc/fstab
