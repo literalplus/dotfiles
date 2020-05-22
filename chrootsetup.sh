@@ -29,7 +29,7 @@ destcmd ln -sf /usr/share/zoneinfo/Europe/Vienna /etc/localtime
 destcmd timedatectl set-ntp true
 destcmd hwclock --systohc
 destcmd sed -i 's/^#en_GB.UTF-8/en_GB.UTF-8/' /etc/locale.gen
-destcmd echo "LANG=en_GB.UTF-8" \>/etc/locale.gen
+destcmd echo "LANG=en_GB.UTF-8" \>/etc/locale.conf
 destcmd locale-gen
 destcmd echo "KEYMAP=de-latin1-nodeadkeys" \>/etc/vconsole.conf
 
