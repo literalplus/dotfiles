@@ -42,7 +42,7 @@ destcmd echo "127.0.1.1 $hn" \>\>/etc/hosts
 
 confirmbefore systemctl disable systemd-networkd.service \
   \&\& systemctl disable systemd-resolved.service \
-  \&\& pacman -Syu NetworkManager
+  \&\& pacman -Syu networkmanager
 
 
 psec "Boot loader (Part I)"
