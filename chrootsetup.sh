@@ -115,18 +115,13 @@ fi
 KPARAMS="root=/dev/mapper/cryptroot rootfstype=ext4 add_efi_memmap rd.luks.name=$ROOT_PARTID=cryptroot"
 pask "Kernel line: $KPARAMS (y/N)"
 exitifnok
-destcmd echo "title Arch Linux" \>/boot/loader/loader.conf
-destcmd echo "linux /vmlinuz-linux" \>\>/boot/loader/loader.conf
-destcmd echo "initrd /intel-ucode.img" \>\>/boot/loader/loader.conf
-destcmd echo "initrd /initramfs-linux.img" \>\>/boot/loader/loader.conf
-destcmd echo "options $KPARAMS" \>\>/boot/loader/loader.conf
+destcmd echo "title Arch Linux" \>/boot/loader/entries/arch.conf
+destcmd echo "linux /vmlinuz-linux" \>\>/boot/loader/entries/arch.conf
+destcmd echo "initrd /intel-ucode.img" \>\>/boot/loader/entries/arch.conf
+destcmd echo "initrd /initramfs-linux.img" \>\>/boot/loader/entries/arch.conf
+destcmd echo "options $KPARAMS" \>\>/boot/loader/entries/arch.conf
 
 confirmbefore cat /boot/loader/loader.conf
-
-pnot "Kernel parameters: $KPARAMS"
-pask "Please add these to the kernel line! (options ...)"
-tmux split-window vim /boot/loader/entries/arch.conf
-confirmbefore cat /boot/loader/entries/arch.conf \| grep options
 confirmbefore mkinitcpio -P
 
 psec "User accounts (Part II)"
