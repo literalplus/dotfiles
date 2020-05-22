@@ -122,7 +122,7 @@ function confirmbefore () {
 function destcmd () {
   pnot "$@"
   if [ -z "$DRY_RUN" ]; then
-    "$@"
+    eval "$@"
     RET=$?
     if [ "$RET" -ne 0 ]; then
       perr "Process exited with code $RET"
