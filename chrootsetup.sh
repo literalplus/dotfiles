@@ -29,24 +29,25 @@ destcmd ln -sf /usr/share/zoneinfo/Europe/Vienna /etc/localtime
 destcmd timedatectl set-ntp true
 destcmd hwclock --systohc
 destcmd sed -i 's/^#en_GB.UTF-8/en_GB.UTF-8/' /etc/locale.gen
-destcmd echo "LANG=en_GB.UTF-8" \> /etc/locale.gen
+destcmd echo "LANG=en_GB.UTF-8" \>/etc/locale.gen
 destcmd echo "KEYMAP=de-latin1-nodeadkeys" \>/etc/vconsole.conf
 
 pask "What is the hostname of this system?"
 read hn
 pnot "Setting hostname to $hn"
 destcmd echo "$hn" \>/etc/hostname
-destcmd echo "127.0.0.1 localhost" \>\>/etc/hosts
+destcmd echo "127.0.0.1 localhost" \>/etc/hosts
 destcmd echo "::1 localhost" \>\>/etc/hosts
 destcmd echo "127.0.1.1 $hn" \>\>/etc/hosts
 
 confirmbefore systemctl disable systemd-networkd.service \
-  \&\& systemctl disabled systemd-resolved.service \
+  \&\& systemctl disable systemd-resolved.service \
   \&\& pacman -Syu NetworkManager
 
 
 psec "Boot loader (Part I)"
-confirmbefore bootctl install && pacman -S systemd-boot-pacman-hook
+confirmbefore bootctl install \
+  \&\& pacman -S systemd-boot-pacman-hook
 
 psec "Encryption setup"
 echo "Please now configure mkinitcpio for encryption."
