@@ -58,6 +58,7 @@ if which yay >/dev/null; then
   pnot "yay is installed"
 else
   mkdir -p build
+  chown -R pnowak: build
   pushd build
   sudo -u "$un" git clone https://aur.archlinux.org/yay.git
   pushd yay
@@ -96,6 +97,12 @@ pnot "Recommended: Set editor=no to prevent setting kernel line to /bin/bash"
 pnot "default should be arch.conf"
 tmux split-window vim /boot/loader/loader.conf
 confirmbefore cat /boot/loader/loader.conf
+
+psec "Firewall"
+cp /dotfiles/nftables.conf /etc/nftables.conf
+destcmd systemctl enable nftables
+destcmd systemctl start nftables
+
 
 #pask "If this is an Intel system, install microcode."
 #pnot "Add a line 'initrd /cpu_intel-ucode.img' before"
