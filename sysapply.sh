@@ -42,3 +42,9 @@ if [ "$PERSONAL" -eq 0 ]; then
   yayfromfile personal
 fi
 
+psec "Workarounds"
+pnot "Disabling starting pulseaudio via systemd, it ships xdg files anyways"
+# Also we don't need a screenreader on the login screen, gdm plsno as well
+# If we don't do this, PA seems to block in uninterruptible sleep forever
+sudo ln -s /dev/null /var/lib/gdm/.config/systemd/user/pulseaudio.service
+systemctl --user disable pulseaudio
