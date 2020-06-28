@@ -88,6 +88,40 @@ alias ssc='sudo systemctl'
 alias grep='grep -i --color'
 alias pacaur='echo please stop'
 
+function choosecont() {
+  LINE=$(docker ps | fzf --header-lines=1)
+  if [[ "$?" -eq 0 ]]; then
+    echo "$LINE" | xargs | cut -d" " -f1
+  fi
+}
+
+function rmcont() {
+  CID=$(choosecont)
+  if [[ -z "$CID" ]]; then
+    echo "No container chosen."
+  else
+    docker rm -f "$CID"
+  fi
+}
+
+function lgcont() {
+  CID=$(choosecont)
+  if [[ -z "$CID" ]]; then
+    echo "No container chosen."
+  else
+    docker logs --since=15m -f "$CID"
+  fi
+}
+
+function shcont() {
+  CID=$(choosecont)
+  if [[ -z "$CID" ]]; then
+    echo "No container chosen."
+  else
+    docker exec -it "$CID" /bin/bash
+  fi
+}
+
 function mkcd {
   if [ "$#" -ne 1 ]; then
     echo "mkcd needs exactly one argument!"
@@ -114,6 +148,7 @@ function prepend-sudo {
 zle -N prepend-sudo
 
 bindkey "^S" prepend-sudo
+
 
 # Automatic appends below this line
 source /usr/share/nvm/init-nvm.sh
