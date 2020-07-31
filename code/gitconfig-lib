@@ -10,5 +10,5 @@
 	tool = kdiff3
 [alias]
 	cleanup = "!git branch --merged | grep -v '^  master$' | grep -v '^  development$' | grep -v '^* ' | xargs git branch -d"
-	force-cleanup = "!git branch | grep -v '^  master$' | grep -v '^  master$' | grep -v '^* ' | xargs git branch -d"
+	force-cleanup = "!git branch | grep -v '^  master$' | grep -v '^  master$' | grep -v '^* ' | xargs git branch -D"
 	klaus = "git push --force-with-lease"
