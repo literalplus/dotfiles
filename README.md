@@ -32,6 +32,7 @@ append `cow_spacesize=1G` to the kernel line when booting.
  * Desktop background
  * Nextcloud
  * Telegram
+ * Adjust PAM auto lockout (default 3 logins, lock for 10 minutes) https://wiki.archlinux.org/index.php/Security#Lock_out_user_after_three_failed_login_attempts
 
 ### GNOME Theme
 GTK Theme: Ant Nebula - [GNOME Look](https://www.gnome-look.org/p/1099856/), [Github](https://github.com/EliverLara/Ant-Nebula)
