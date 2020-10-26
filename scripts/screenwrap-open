@@ -12,7 +12,7 @@ BASE_PATH="${1%/}" # strip trailing slashes
 DATED_DIR="$(date +%Y/%m)"
 DIR_PATH="$BASE_PATH""/""$DATED_DIR"
 OPEN_APP="$2"
-FILE_PATH="$DIR_PATH""/""$(date +%Y-%m-%d_%H:%M:%S.png)"
+FILE_PATH="$DIR_PATH""/""$(date +%Y-%m-%d_%H-%M-%S.png)"
 
 mkdir -p "$DIR_PATH"
 gnome-screenshot -f "$FILE_PATH" "${@:3}"
