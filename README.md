@@ -19,6 +19,7 @@ append `cow_spacesize=1G` to the kernel line when booting.
  * Set up shortcuts in GNOME
   * Disable default screenshot shortcuts under "Screenshots"
   * Disable Windows / Move window shortcut
+  * `Super+U -> /usr/local/bin/rofi-uuid`
   * `Super+. -> /usr/local/bin/rofi-emoji`
   * `Super+C -> sparkle|xsel -ib`
   * `Audio next -> dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next`

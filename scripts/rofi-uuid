@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+
+UUIDS=""
+
+for i in {1..1}; do
+  UUIDS="${UUIDS}$(uuidgen)"$'\n'
+done
+
+UUIDS="${UUIDS}""UUID.fromString(\"$(uuidgen)\")"
+
+SELECTED=$(echo ${UUIDS} | rofi -width 25 -lines 7 -dmenu -i 'uuid: ' -kb-row-tab '' -kb-row-select Tab)
+
+if [[ "$?" -eq 0 ]]; then
+  echo "${SELECTED}" | xclip -i -selection primary
+  xclip -o -selection primary | xclip -i -selection clipboard
+  echo "Selected: ${SELECTED}"
+else
+  echo "Canceled."
+fi
+
