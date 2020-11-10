@@ -5,7 +5,7 @@ UUIDS="$(uuidgen)"$'\n'"\"$(uuidgen)\""$'\n'"UUID.fromString(\"$(uuidgen)\")"
 SELECTED=$(echo ${UUIDS} | rofi -width 25 -lines 7 -dmenu -i -p 'uuid' -sep $'\n')
 
 if [[ "$?" -eq 0 ]]; then
-  echo "${SELECTED}" | xclip -i -selection primary
+  echo -n "${SELECTED}" | xclip -i -selection primary
   xclip -o -selection primary | xclip -i -selection clipboard
   echo "Selected: ${SELECTED}"
 else
