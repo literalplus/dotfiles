@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+if [ "$#" -ne 1 ]; then
+  echo "$0 [zram-size]"
+  exit 1
+elif [ -d "/sys/block/zram0" ]; then
+  echo "Already set up."
+  exit 2
+fi
+
+modprobe zram
+echo lz4 > /sys/block/zram0/comp_algorithm
+echo "$1" > /sys/block/zram0/disksize
+mkswap --label zram0 /dev/zram0
+swapon --priority 100 /dev/zram0
+
