@@ -39,6 +39,10 @@ function cleanrepo() {
 for dirname in ./*/; do
   pushd "$dirname" >/dev/null || exit
   cleanrepo
+  if [[ -x "cleanup.sh" ]]; then
+    echo " Recursing into subdirectory $dirname..."
+    ./cleanup.sh "$@"
+  fi
   popd >/dev/null || exit
 done
 
