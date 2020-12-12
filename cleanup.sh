@@ -30,6 +30,11 @@ function cleanrepo() {
         git checkout master
       fi
     fi
+    if [[ "$CLEANUP_OP" == "force-cleanup" ]]; then
+      git branch --merged | grep -v '^  master$' | grep -v '^  development$' | grep -v '^* ' | xargs git branch -d
+    else
+      git branch | grep -v '^  master$' | grep -v '^  development$' | grep -v '^* ' | xargs git branch -D
+    fi
     git $CLEANUP_OP
   else
     echo " --- Not a git repository: ${PWD##*/}"
