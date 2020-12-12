@@ -35,7 +35,6 @@ function cleanrepo() {
     else
       git branch | grep -v '^  master$' | grep -v '^  development$' | grep -v '^* ' | xargs git branch -D
     fi
-    git $CLEANUP_OP
   else
     echo " --- Not a git repository: ${PWD##*/}"
   fi
