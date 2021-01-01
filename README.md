@@ -16,6 +16,7 @@ append `cow_spacesize=1G` to the kernel line when booting.
 ### Manual steps
 
  * Install NVIDIA driver
+ * Switch to NVIDIA-only mode for external screens / DisplayLink support https://wiki.archlinux.org/index.php/NVIDIA_Optimus#Use_NVIDIA_graphics_only
  * Set up shortcuts in GNOME
   * Disable default screenshot shortcuts under "Screenshots"
   * Disable Windows / Move window shortcut
