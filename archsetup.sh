@@ -113,7 +113,7 @@ if [ -n "$DRY_RUN" ]; then
 fi
 MIRRORSWAP="$MIRRORS.rankinstall"
 cp "$MIRRORS" "$MIRRORS.backup"
-curl -s "https://www.archlinux.org/mirrorlist/?country=AT&country=CZ&country=DE&country=SK&country=SI&protocol=https&ip_version=4&use_mirror_status=on" >"$MIRRORSWAP"
+curl -s "https://archlinux.org/mirrorlist/?country=AT&country=CZ&country=DE&country=SK&country=SI&protocol=https&ip_version=4&use_mirror_status=on" >"$MIRRORSWAP"
 pnot "Mirror list backup placed at $MIRRORS.backup"
 sed -i 's/^#Server/Server/' "$MIRRORSWAP"
 confirmbefore rankmirrors -n 6 "$MIRRORSWAP" \> "$MIRRORS"
