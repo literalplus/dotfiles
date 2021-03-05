@@ -48,3 +48,11 @@ pnot "Disabling starting pulseaudio via systemd, it ships xdg files anyways"
 # If we don't do this, PA seems to block in uninterruptible sleep forever
 sudo ln -s /dev/null /var/lib/gdm/.config/systemd/user/pulseaudio.service
 systemctl --user disable pulseaudio
+
+psec "Emoji Fonts"
+applycp "base/75-noto-color-emoji.conf" "/etc/fonts/conf.avail/75-noto-color-emoji.conf"
+sudo ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d
+sudo ln -s /etc/fonts/conf.avail/10-sub-pixel-rgb.conf /etc/fonts/conf.d
+sudo ln -s /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d
+sudo ln -sf /etc/fonts/conf.avail/75-noto-color-emoji.conf /etc/fonts/conf.d/
+
