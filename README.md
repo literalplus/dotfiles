@@ -28,6 +28,7 @@ append `cow_spacesize=1G` to the kernel line when booting.
   * `Audio play -> dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause`
   * `Print -> screenwrap-open /tmp/ viewnior -a`
   * `Shift+Print -> screenwrap-open /home/lit/Screenshots/ -a`
+  * `Ctrl+Print -> flameshot gui`
   * `Super+X -> albert toggle`
   * `Super+R -> gnome-terminal`
   * `Super+V -> copyq toggle`
