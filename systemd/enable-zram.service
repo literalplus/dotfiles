@@ -1,0 +1,8 @@
+[Unit]
+Description=Enable ZRAM on startup
+
+[Service]
+ExecStart=/usr/local/bin/enable-zram 8G
+
+[Install]
+WantedBy=multi-user.target

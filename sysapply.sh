@@ -6,14 +6,27 @@ if [ "$(id -u)" -eq 0 ]; then
   exit 1
 fi
 
+psec "Installing standard scripts to /usr/local/bin"
 pushd scripts >/dev/null
 for script in *; do
   sudo bash -c "source $PWD/../lib.sh && applycp \"$script\" \"/usr/local/bin/$script\" overwrite"
 done
 popd >/dev/null
 
+psec "Installing standard systemd unit files"
+pushd systemd >/dev/null
+for unit in *; do
+  sudo bash -c "source $PWD/../lib.sh && applycp \"$unit\" \"/etc/systemd/system/$unit\" overwrite"
+done
+confirmbefore sudo systemctl daemon-reload
+psec "Enabling installed unit files"
+for unit in *; do
+  sudo systemctl enable "$unit"
+done
+popd >/dev/null
+
 psec "Making sure yay is installed"
-sudo pacman -Syu
+confirmbefore sudo pacman -Syu
 if which yay >/dev/null; then
   pnot "Already installed"
 else
