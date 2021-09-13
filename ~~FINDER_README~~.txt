@@ -3,8 +3,8 @@ Dear finder,
 you have found a device which belongs to me, Philipp Nowak.
 
 Please kindly contact me:
- -> https://lit.plus
- -> lost@lit.plus
+ -> https://phnowak.eu
+ -> lost@phnowak.eu
 
 Thank you!
 
