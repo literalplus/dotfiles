@@ -87,6 +87,7 @@ source $ZSH/oh-my-zsh.sh
 alias ssc='sudo systemctl'
 alias grep='grep -i --color'
 alias pacaur='echo please stop'
+alias f='nautilus . &'
 
 function choosecont() {
   LINE=$(docker ps | fzf --header-lines=1)
