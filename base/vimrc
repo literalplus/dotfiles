@@ -2,6 +2,7 @@ execute pathogen#infect()
 syntax on
 filetype plugin indent on
 set list
+set tabstop=2 shiftwidth=2 expandtab
 set listchars=tab:!·,trail:·
 set viminfo='100,<100,:100,%,n~/.vim/.viminfo
 
