@@ -123,7 +123,7 @@ function shcont() {
   if [[ -z "$CID" ]]; then
     echo "No container chosen."
   else
-    docker exec -it "$CID" /bin/sh -c "/bin/bash || /bin/sh || /bin/sh""
+    docker exec -it "$CID" /bin/sh -c "/bin/bash || /bin/sh || /bin/sh"
   fi
 }
 
