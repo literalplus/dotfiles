@@ -128,6 +128,8 @@ destcmd genfstab -U /mnt \>\> /mnt/etc/fstab
 
 destcmd mkdir -p /mnt/dotfiles
 destcmd cp -r . /mnt/dotfiles
+# https://wiki.archlinux.org/title/Systemd-resolved#DNS -> cannot be done inside chroot (bind mount)
+destcmd ln -sf /run/systemd/resolve/stub-resolv.conf /mnt/etc/resolv.conf
 confirmbefore arch-chroot /mnt /dotfiles/chrootsetup.sh
 destcmd rm -rf /mnt/dotfiles
 

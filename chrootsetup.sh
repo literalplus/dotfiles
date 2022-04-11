@@ -45,8 +45,9 @@ else
   destcmd echo "127.0.1.1 $hn" \>\>/etc/hosts
 fi
 
+# Not disabling systemd-resolved -> resolvectl for VPN up/down scripts
+# stub-resolv.conf is configured outside the chroot as per the wiki
 confirmbefore systemctl disable systemd-networkd.service \
-  \&\& systemctl disable systemd-resolved.service \
   \&\& pacman -Sy --needed networkmanager \
   \&\& systemctl enable NetworkManager
 
