@@ -32,6 +32,7 @@ append `cow_spacesize=1G` to the kernel line when booting.
   * `Super+X -> albert toggle`
   * `Super+R -> gnome-terminal`
   * `Super+V -> copyq toggle`
+  * `Super+Y -> rofi-window`
  * Disable conflicting Ctrl-Shift-U shortcut in `ibus-setup` utility
  * Desktop background
  * Nextcloud

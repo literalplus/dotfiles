@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+
+rofi -show window -show-icons
+
