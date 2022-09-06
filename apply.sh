@@ -11,6 +11,7 @@ applyln "~~FINDER_README~~.txt" "$HOME/~~FINDER_README~~.txt"
 applyln "base/tmux.conf" "$HOME/.tmux.conf"
 applyln "base/vimrc" "$HOME/.vimrc"
 applycp "zshrc-tpl" "$HOME/.zshrc"
+applyln "base/rofi-config.rasi" "$HOME/.config/rofi/config.rasi"
 
 # Coding tools
 applycp "code/gitconfig-tpl" "$HOME/.gitconfig"
