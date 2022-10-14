@@ -156,5 +156,7 @@ bindkey "^S" prepend-sudo
 
 
 # Automatic appends below this line
-source /usr/share/nvm/init-nvm.sh
+if [[ -f /usr/share/nvm/init-nvm.sh ]]; then
+  source /usr/share/nvm/init-nvm.sh
+fi
 export JAVA_HOME=/usr/lib/jvm/default
