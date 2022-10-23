@@ -44,3 +44,12 @@ append `cow_spacesize=1G` to the kernel line when booting.
 ### GNOME Theme
 GTK Theme: Ant Nebula - [GNOME Look](https://www.gnome-look.org/p/1099856/), [Github](https://github.com/EliverLara/Ant-Nebula)
 Icon Theme: Boston - [GNOME Look](https://www.gnome-look.org/p/1012402/), [Github](https://github.com/heychrisd/Boston-Icons)
+
+## GRUB commands
+
+````bash
+sudo grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=FreshGRUB
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+````
+
+
