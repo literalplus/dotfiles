@@ -3,15 +3,14 @@ code
 docker-compose
 ethtool
 httpie
-intellij-idea-ultimate-edition
-intellij-idea-ultimate-edition-jre
+jetbrains-toolbox
 jsonnet
 k9s
 kubectl
 kubectx
 maven
 mtr
-nvm
+volta-bin
 postman-bin
 python-pip
 valgrind
