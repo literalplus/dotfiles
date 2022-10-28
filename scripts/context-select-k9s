@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+CHOICES_RAW=$(kubectl config get-contexts | tr -s ' ' | cut -f2 -d' ' | tail -n '+2')
+CHOICES=$(echo "$CHOICES_RAW" | sed 's/^dev$/dev-internal/;s/^test$/test-internal/;s/^prod$/prod-internal/')
+SELECTION_RAW=$(echo "$CHOICES" | rofi -width 25 -lines 7 -dmenu -i -p 'ctx' -sep $'\n' -matching fuzzy)
+SELECTION=$(echo "$SELECTION_RAW" | sed 's/^dev-internal$/dev/;s/^test-internal$/test/;s/^prod-internal$/prod/')
+
+
+if [[ "$?" -eq 0 ]]; then
+  k9s --context "$SELECTION"
+else
+  echo "Canceled."
+fi
