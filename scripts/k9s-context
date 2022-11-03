@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+
+# Need to source .zshrc directly because gnome-terminal uses execve
+# directly and doesn't load the shell init scripts. but we need it
+# for the kubectl plugins.
+
+if [[ "$#" -ne 1 ]]; then
+  echo "Usage: $0 [KUBECTL CONTEXT]" >&2
+  exit 3
+fi
+
+source ~/.zshrc
+
+# Set terminal title
+echo -ne "\033]0;$1 - k9s\007" && \
+  k9s --context "$1"
+echo "k9s terminated."
+

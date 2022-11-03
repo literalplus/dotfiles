@@ -88,6 +88,7 @@ function applycp () {
     psuc "$TARGET_RAW created"
   elif [ -f "$TARGET" ]; then
     if [ "$OVERWRITE" = "overwrite" ]; then
+      cp "$TEMPLATE" "$TARGET"
       psuc "$TARGET_RAW overwritten"
     else
       pnot "$TARGET_RAW exists already"
