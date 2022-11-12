@@ -52,7 +52,7 @@ echo "Please partition the disks."
 pnot "Recommended layout (gdisk):"
 pnot " (1) 512M EFI system & boot partition EF00"
 pnot " (2) remaining space 8300"
-pnot " (3) 4G cryptswap placeholder (if needed) 8300"
+#pnot " (3) 4G cryptswap placeholder (if needed) 8300"
 pnot "If encrypting existing data, consider wiping the drives."
 pnot "# gdisk /dev/sdX (Ctrl-D when done)"
 pnot "Press n for a new partition, ? for help"
@@ -84,14 +84,14 @@ else
   exitifnok
 fi
 
-SWAP_PART=$(echo "$ALLDISKS" | fzf --header="Encrypted swap partition")
-if [ "$?" -ne 0 ]; then
-  perr "Aborted."
-  exit 1
-else
-  SWAP_PART=$(echo "$SWAP_PART" | awk '{print $1}')
-  psuc "Encrypted swap partition: $SWAP_PART"
-fi
+#SWAP_PART=$(echo "$ALLDISKS" | fzf --header="Encrypted swap partition")
+#if [ "$?" -ne 0 ]; then
+#  perr "Aborted."
+#  exit 1
+#else
+#  SWAP_PART=$(echo "$SWAP_PART" | awk '{print $1}')
+#  psuc "Encrypted swap partition: $SWAP_PART"
+#fi
 
 
 psec "Format partitions"

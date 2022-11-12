@@ -10,7 +10,7 @@ Use `sysapply.sh` to apply system-level configuration.
 ## Arch setup
 Use `archsetup.sh` for Arch Linux setup from archiso.
 
-Note that the default kernel line allocates no extra space. To change this,
+Note that the default kernel line allocates no extra space, which you need to clone the git repo. To change this,
 append `cow_spacesize=1G` to the kernel line when booting.
 
 ### Manual steps
@@ -22,7 +22,6 @@ append `cow_spacesize=1G` to the kernel line when booting.
   * Disable Windows / Move window shortcut
   * `Super+U -> /usr/local/bin/rofi-uuid`
   * `Super+. -> /usr/local/bin/rofi-emoji`
-  * `Super+C -> sparkle|xsel -ib`
   * `Audio next -> dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next`
   * `Audio previous -> dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous`
   * `Audio play -> dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause`
@@ -40,7 +39,6 @@ append `cow_spacesize=1G` to the kernel line when booting.
  * Telegram
  * Adjust PAM auto lockout (default 3 logins, lock for 10 minutes) https://wiki.archlinux.org/index.php/Security#Lock_out_user_after_three_failed_login_attempts
  * `/etc/pacman.conf` -> `ILoveCandy`, `ParallelDownloads=5`
- * PulseAudio `/etc/pulse/default.pa` -> Comment out `load-module module-role-cork` to prevent Teams from muting Spotify
 
 ### GNOME Theme
 GTK Theme: Ant Nebula - [GNOME Look](https://www.gnome-look.org/p/1099856/), [Github](https://github.com/EliverLara/Ant-Nebula)

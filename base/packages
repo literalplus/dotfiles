@@ -56,6 +56,11 @@ paprefs
 pavucontrol
 pdfgrep
 pdfmod
+pipewire
+pipewire-alsa
+pipewire-jack
+pipewire-pulse
+qpwgraph
 rofi
 rsync
 seahorse
@@ -73,6 +78,7 @@ vim-pathogen
 vi-vim-symlink
 vlc
 wget
+wireplumber
 xclip
 xdg-user-dirs-gtk
 xdotool

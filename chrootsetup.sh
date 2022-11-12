@@ -75,7 +75,7 @@ if which yay >/dev/null; then
   pnot "yay is installed"
 else
   mkdir -p build
-  chown -R pnowak: build
+  chown -R "$un"":" build
   pushd build
   sudo -u "$un" git clone https://aur.archlinux.org/yay.git
   pushd yay
@@ -142,6 +142,7 @@ destcmd systemctl start nftables
 
 psec "GUI"
 destcmd pacman -Sy gnome
+destcmd pacman -Sy pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber
 destcmd localectl set-x11-keymap de nodeadkeys
 
 
