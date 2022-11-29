@@ -4,6 +4,10 @@ function psuc () {
   echo -e "\e[1;32m ++ \e[1;97m""$@""\e[0m"
 }
 
+function pweaksuc () {
+  echo -e "\e[32m ++ \e[2m""$@""\e[0m"
+}
+
 function pwrn () {
   echo -e "\e[1;33m !! \e[1;97m""$@""\e[0m"
 }
@@ -88,8 +92,15 @@ function applycp () {
     psuc "$TARGET_RAW created"
   elif [ -f "$TARGET" ]; then
     if [ "$OVERWRITE" = "overwrite" ]; then
-      cp "$TEMPLATE" "$TARGET"
-      psuc "$TARGET_RAW overwritten"
+      # sha256sum outputs the filename, which we cut out obviously
+      SHA_TEMPLATE=$(sha256sum $TEMPLATE | cut -d " " -f 1)
+      SHA_TARGET=$(sha256sum $TARGET | cut -d " " -f 1)
+      if [ "$SHA_TEMPLATE" != "$SHA_TARGET" ]; then
+        psuc "$TARGET_RAW changed, overwriting."
+        cp "$TEMPLATE" "$TARGET"
+      else
+        pweaksuc "$TARGET_RAW unchanged, leaving it alone."
+      fi
     else
       pnot "$TARGET_RAW exists already"
     fi
