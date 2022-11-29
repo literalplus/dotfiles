@@ -30,10 +30,10 @@ if [[ ! -d /etc/.git ]]; then
   pnot "No /etc/.git - Proceeding with setup."
   pushd /etc >/dev/null
   confirmbefore sudo etckeeper init
-  HOSTN="$(hostname)"
+  HOSTN="$(hostname 2>/dev/null || hostnamectl hostname 2>/dev/null || echo unknown)"
   destcmd sudo git config --local user.name "$HOSTN etckeeper"
   destcmd sudo git config --local user.email "$HOSTN-etckeeper@lit.plus"
-  destcmd sudo etckeeper commit "Initial commit (sysapply.sh)"
+  destcmd sudo etckeeper commit "Initial commit from sysapply.sh"
   popd >/dev/null
 else
   pnot "Looks like it's already set up."
