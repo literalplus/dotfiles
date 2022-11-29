@@ -5,6 +5,7 @@ chrome-gnome-shell
 copyq
 dconf-editor
 dhcpcd
+etckeeper
 exfat-utils
 fd
 file-roller

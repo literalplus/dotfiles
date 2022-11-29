@@ -25,6 +25,21 @@ for unit in *; do
 done
 popd >/dev/null
 
+psec "Setting up etckeeper"
+if [[ ! -d /etc/.git ]]; then
+  pnot "No /etc/.git - Proceeding with setup."
+  pushd /etc >/dev/null
+  confirmbefore sudo etckeeper init
+  HOSTN="$(hostname)"
+  destcmd sudo git config --local user.name "$HOSTN etckeeper"
+  destcmd sudo git config --local user.email "$HOSTN-etckeeper@lit.plus"
+  destcmd sudo etckeeper commit "Initial commit (sysapply.sh)"
+  popd >/dev/null
+else
+  pnot "Looks like it's already set up."
+fi
+sudo systemctl enable etckeeper.timer
+
 psec "Making sure yay is installed"
 confirmbefore sudo pacman -Syu
 if which yay >/dev/null; then
