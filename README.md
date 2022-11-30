@@ -7,7 +7,6 @@ Use `apply.sh` to apply user-level configuration.
 
 Use `sysapply.sh` to apply system-level configuration.
 
-
 ## Arch setup
 Use `archsetup.sh` for Arch Linux setup from archiso.
 
