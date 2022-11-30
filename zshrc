@@ -1,3 +1,7 @@
+#!/usr/bin/env zsh
+# shellcheck disable=SC2034
+# SC2034 wants us to export all variables but that's not how it works here
+
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
 
@@ -94,15 +98,13 @@ alias pacaur='echo please stop'
 alias f='nautilus . &'
 
 function choosecont() {
-  LINE=$(docker ps | fzf --header-lines=1)
-  if [[ "$?" -eq 0 ]]; then
+  if LINE=$(docker ps | fzf --header-lines=1); then
     echo "$LINE" | xargs | cut -d" " -f1
   fi
 }
 
 function rmcont() {
-  CID=$(choosecont)
-  if [[ -z "$CID" ]]; then
+  if CID=$(choosecont); then
     echo "No container chosen."
   else
     docker rm -f "$CID"
@@ -110,8 +112,7 @@ function rmcont() {
 }
 
 function lgcont() {
-  CID=$(choosecont)
-  if [[ -z "$CID" ]]; then
+  if CID=$(choosecont); then
     echo "No container chosen."
   else
     docker logs --since=15m -f "$CID"
@@ -132,8 +133,8 @@ function mkcd {
     echo "mkcd needs exactly one argument!"
     exit 1
   fi
-  mkdir $1
-  cd $1
+  mkdir "$1" || return 2
+  cd "$1"
   echo "HENLO $1"
 }
 

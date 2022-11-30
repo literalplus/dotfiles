@@ -11,7 +11,7 @@ verbose='false'
 function usage {
     echo "Rerun a given command every time filesystem changes are detected."
     echo ""
-    echo "Usage: $(basename $0) [OPTIONS] COMMAND"
+    echo "Usage: $(basename "$0") [OPTIONS] COMMAND"
     echo ""
     echo "  -c, --clear     Clear the screen before each execution of COMMAND."
     echo "  -v, --verbose   Print the name of the files that changed to cause"
@@ -55,7 +55,7 @@ function execute() {
     fi
     if [ $verbose = "true" ]; then
         if [ -n "$changes" ]; then
-            echo -e "Changed: $(echo -e $changes | cut -d' ' -f2 | sort -u | tr '\n' ' ')"
+            echo -e "Changed: $(echo -e "$changes" | cut -d' ' -f2 | sort -u | tr '\n' ' ')"
             changes=""
         fi
         echo "$@"
@@ -69,12 +69,12 @@ ignore_until=$(date +%s.%N)
 inotifywait --quiet --recursive --monitor --format "%e %w%f" \
     --event modify --event move --event create --event delete \
     --exclude '__pycache__' --exclude '.cache' \
-    . | while read changed
+    . | while read -r changed
 do
 
     changes="$changes\n$changed"
 
-    if [ $(echo "$(date +%s.%N) > $ignore_until" | bc) -eq 1 ] ; then
+    if [ "$(echo "$(date +%s.%N) > $ignore_until" | bc)" -eq 1 ] ; then
         ignore_until=$(echo "$(date +%s.%N) + $ignore_secs" | bc)
         ( sleep $ignore_secs ; execute "$@" ) &
     fi

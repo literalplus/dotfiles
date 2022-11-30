@@ -1,4 +1,5 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
+# shebang to make shellcheck shut up, it still needs ~/.zshrc
 
 # Need to source .zshrc directly because gnome-terminal uses execve
 # directly and doesn't load the shell init scripts. but we need it
@@ -9,6 +10,7 @@ if [[ "$#" -ne 1 ]]; then
   exit 3
 fi
 
+# shellcheck disable=SC1090
 source ~/.zshrc
 
 # Set terminal title

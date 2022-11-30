@@ -73,7 +73,7 @@ function download() {
 
 function rofi_menu() { # {{{
 	rofi -width 25 -lines 7 -dmenu -i -p 'emoji: ' \
-		-kb-row-tab '' \
+		-kb-element-next '' \
 		-kb-row-select Tab \
 		-kb-custom-1 Ctrl+c
 }
@@ -95,11 +95,11 @@ function toclipboard() { # {{{
 function display() {
 	local emoji line exit_code quantifier
 
-	emoji=$(cat "$EMOJI_FILE" | grep -v '#' | grep -v '^[[:space:]]*$')
+	emoji=$(grep -v '#' < "$EMOJI_FILE" | grep -v '^[[:space:]]*$')
 	line="$(echo "$emoji" | rofi_menu)"
 	exit_code=$?
 
-	line=($line)
+	line=("$line")
 	last=${line[${#line[@]}-1]}
 	quantifier="${last:${#last}-1:1}"
 	if [[ ! "$quantifier" =~ [0-9] ]]; then

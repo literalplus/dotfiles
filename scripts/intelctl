@@ -38,14 +38,14 @@ function setDirectly {
   if [[ $UID -ne 0 ]]; then
     echo "intelctl: Cannot set $3 when not root!"
   else
-    echo $1 >$2
+    echo "$1" >"$2"
     echo "intelctl: Set $3 to $1."
   fi
 }
 
 function parseTurboValue {
   # returns the value for no_turbo, aka the opposite of the argument
-  case $1 in
+  case "$1" in
   on)
     echo "0"
     ;;
@@ -60,27 +60,27 @@ function parseTurboValue {
   esac
 }
 
-case $1 in
+case "$1" in
 max)
   requireArgs 2
-  setDirectly $2 $MAX_PATH "upper bound"
+  setDirectly "$2" "$MAX_PATH" "upper bound"
   showStatus
   ;;
 min)
   requireArgs 2
-  setDirectly $2 $MIN_PATH "lower bound"
+  setDirectly "$2" "$MIN_PATH" "lower bound"
   showStatus
   ;;
 both)
   requireArgs 3
-  setDirectly $2 $MIN_PATH "lower bound"
-  setDirectly $3 $MAX_PATH "upper bound"
+  setDirectly "$2" "$MIN_PATH" "lower bound"
+  setDirectly "$3" "$MAX_PATH" "upper bound"
   showStatus
   ;;
 turbo)
   requireArgs 2
-  NO_TURBO_VAL=$(parseTurboValue $2)
-  setDirectly $NO_TURBO_VAL $NO_TURBO_PATH "no_turbo"
+  NO_TURBO_VAL=$(parseTurboValue "$2")
+  setDirectly "$NO_TURBO_VAL" "$NO_TURBO_PATH" "no_turbo"
   showStatus
   ;;
 status)
