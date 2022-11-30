@@ -63,8 +63,8 @@ exitifnok
 
 ALLDISKS=$(fdisk -l | grep /dev/ | grep -v "Disk /dev/")
 export FZF_DEFAULT_OPTS="--reverse --height=10"
-EFI_PART=$(echo "$ALLDISKS" | fzf --header="EFI system partition")
-if [ "$?" -ne 0 ]; then
+
+if ! EFI_PART=$(echo "$ALLDISKS" | fzf --header="EFI system partition"); then
   perr "Aborted."
   exit 1
 else
@@ -72,8 +72,8 @@ else
   psuc "EFI system partition: $EFI_PART"
 fi
 
-ROOT_PART=$(echo "$ALLDISKS" | fzf --header="Encrypted root partition")
-if [ "$?" -ne 0 ]; then
+
+if ! ROOT_PART=$(echo "$ALLDISKS" | fzf --header="Encrypted root partition"); then
   perr "Aborted."
   exit 1
 else

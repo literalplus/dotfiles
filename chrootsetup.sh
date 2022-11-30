@@ -102,8 +102,7 @@ pwrn "This only works on Intel systems! Adapt loader.conf for AMD"
 destcmd pacman -Sy --needed intel-ucode
 
 ALLDISKS=$(fdisk -l | grep /dev/ | grep "Linux filesystem" | grep -v "Disk /dev/")
-ROOT_PART=$(echo "$ALLDISKS" | fzf --header="Encrypted root partition (again)")
-if [ "$?" -ne 0 ]; then
+if ! ROOT_PART=$(echo "$ALLDISKS" | fzf --header="Encrypted root partition (again)"); then
   perr "Aborted."
   exit 1
 else
