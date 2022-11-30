@@ -7,14 +7,14 @@ if [ "$(id -u)" -eq 0 ]; then
 fi
 
 psec "Installing standard scripts to /usr/local/bin"
-pushd scripts >/dev/null
+pushd scripts >/dev/null || exit
 for script in *; do
   sudo bash -c "source $PWD/../lib.sh && applycp \"$script\" \"/usr/local/bin/$script\" overwrite"
 done
-popd >/dev/null
+popd >/dev/null || exit
 
 psec "Installing standard systemd unit files"
-pushd systemd >/dev/null
+pushd systemd >/dev/null || exit
 for unit in *; do
   sudo bash -c "source $PWD/../lib.sh && applycp \"$unit\" \"/etc/systemd/system/$unit\" overwrite"
 done
@@ -23,18 +23,18 @@ psec "Enabling installed unit files"
 for unit in *; do
   sudo systemctl enable "$unit"
 done
-popd >/dev/null
+popd >/dev/null || exit
 
 psec "Setting up etckeeper"
 if [[ ! -d /etc/.git ]]; then
   pnot "No /etc/.git - Proceeding with setup."
-  pushd /etc >/dev/null
+  pushd /etc >/dev/null || exit
   confirmbefore sudo etckeeper init
   HOSTN="$(hostname 2>/dev/null || hostnamectl hostname 2>/dev/null || echo unknown)"
   destcmd sudo git config --local user.name "$HOSTN etckeeper"
   destcmd sudo git config --local user.email "$HOSTN-etckeeper@lit.plus"
   destcmd sudo etckeeper commit "Initial commit from sysapply.sh"
-  popd >/dev/null
+  popd >/dev/null || exit
 else
   pnot "Looks like it's already set up."
 fi
@@ -45,18 +45,18 @@ confirmbefore sudo pacman -Syu
 if which yay >/dev/null; then
   pnot "Already installed"
 else
-  pushd build
+  pushd build || exit
   git clone https://aur.archlinux.org/yay.git
-  pushd yay
+  pushd yay || exit
   makepkg -si
-  popd
+  popd || exit
   rm -r yay
-  popd
+  popd || exit
 fi
 
 function yayfromfile () {
   FILECAT=$1
-  yay -S --color=always --needed $(cat $FILECAT/packages | tr "\n" " ") 2>&1 | grep -v --color=always "is up to date -- skipping"
+  yay -S --color=always --needed "$(tr "\n" " ")" < "$FILECAT/packages" 2>&1 | grep -v --color=always "is up to date -- skipping"
 }
 
 psec "Base packages"

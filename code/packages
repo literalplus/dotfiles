@@ -13,6 +13,7 @@ mtr
 volta-bin
 postman-bin
 python-pip
+shellcheck
 valgrind
 gdb
 virtualbox

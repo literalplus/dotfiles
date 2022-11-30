@@ -1,4 +1,4 @@
-#/usr/bin/env bash
+#!/usr/bin/env bash
 source ./lib.sh
 
 if [ "$(id -u)" -ne 0 ]; then
@@ -19,7 +19,7 @@ pnot "List-to-rank is at $MIRRORSWAP"
 sed -i 's/^#Server/Server/' "$MIRRORSWAP"
 confirmbefore rankmirrors -n 6 "$MIRRORSWAP" \> "$MIRRORS"
 dim
-cat "$MIRRORS" | grep -v "#"
+grep -v "#" < "$MIRRORS"
 undim
 
 pnot "Done."

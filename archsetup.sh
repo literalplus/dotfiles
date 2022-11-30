@@ -62,7 +62,7 @@ pask "Continue? (y/N)"
 exitifnok
 
 ALLDISKS=$(fdisk -l | grep /dev/ | grep -v "Disk /dev/")
-FZF_DEFAULT_OPTS="--reverse --height=10"
+export FZF_DEFAULT_OPTS="--reverse --height=10"
 EFI_PART=$(echo "$ALLDISKS" | fzf --header="EFI system partition")
 if [ "$?" -ne 0 ]; then
   perr "Aborted."

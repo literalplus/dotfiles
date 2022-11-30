@@ -1,31 +1,35 @@
 #!/usr/bin/env bash
 
 function psuc () {
-  echo -e "\e[1;32m ++ \e[1;97m""$@""\e[0m"
+  echo -e "\e[1;32m ++ \e[1;97m""$*""\e[0m"
+}
+
+function pok () {
+  echo -e "\e[1;32m ok \e[1;97m""$*""\e[0m"
 }
 
 function pweaksuc () {
-  echo -e "\e[32m ++ \e[2m""$@""\e[0m"
+  echo -e "\e[32m ++ \e[2m""$*""\e[0m"
 }
 
 function pwrn () {
-  echo -e "\e[1;33m !! \e[1;97m""$@""\e[0m"
+  echo -e "\e[1;33m !! \e[1;97m""$*""\e[0m"
 }
 
 function perr () {
-  echo -e "\e[1;31m ** \e[1;97m""$@""\e[0m"
+  echo -e "\e[1;31m ** \e[1;97m""$*""\e[0m"
 }
 
 function psec () {
-  echo -e "\e[1;34m :: \e[1;97m""$@""\e[0m"
+  echo -e "\e[1;34m :: \e[1;97m""$*""\e[0m"
 }
 
 function pask() {
-  echo -e "\e[1;35m ?? \e[1;97m""$@""\e[0m"
+  echo -e "\e[1;35m ?? \e[1;97m""$*""\e[0m"
 }
 
 function pnot () {
-  echo -e "    \e[2m""$@""\e[0m"
+  echo -e "    \e[2m""$*""\e[0m"
 }
 
 function dim () {
@@ -41,7 +45,7 @@ function movelineup () {
 }
 
 function exitifnok () {
-  read choice
+  read -r choice
   movelineup
   movelineup
   if [ "$choice" = "y" ]; then
@@ -53,8 +57,8 @@ function exitifnok () {
 }
 
 function applyln () {
-  TEMPLATE="$(realpath $1)"
-  TARGET="$(realpath $2)"
+  TEMPLATE="$(realpath "$1")"
+  TARGET="$(realpath "$2")"
   TARGET_RAW="$2"
   if [ "$TEMPLATE" = "$TARGET" ]; then
     pnot "$TARGET_RAW already set up"
@@ -65,7 +69,7 @@ function applyln () {
     psuc "$TARGET_RAW created"
   elif [ -f "$TARGET" ]; then
     pwrn "$TARGET_RAW exists already. Overwrite? (y/N)"
-    read choice
+    read -r choice
     movelineup
     if [ "$choice" = "y" ]; then
       ln -sf "$TEMPLATE" "$TARGET"
@@ -79,8 +83,8 @@ function applyln () {
 }
 
 function applycp () {
-  TEMPLATE="$(realpath $1)"
-  TARGET="$(realpath $2)"
+  TEMPLATE="$(realpath "$1")"
+  TARGET="$(realpath "$2")"
   TARGET_RAW="$2"
   OVERWRITE="$3"
   if [ "$TEMPLATE" = "$TARGET" ]; then
@@ -93,8 +97,8 @@ function applycp () {
   elif [ -f "$TARGET" ]; then
     if [ "$OVERWRITE" = "overwrite" ]; then
       # sha256sum outputs the filename, which we cut out obviously
-      SHA_TEMPLATE=$(sha256sum $TEMPLATE | cut -d " " -f 1)
-      SHA_TARGET=$(sha256sum $TARGET | cut -d " " -f 1)
+      SHA_TEMPLATE=$(sha256sum "$TEMPLATE" | cut -d " " -f 1)
+      SHA_TARGET=$(sha256sum "$TARGET" | cut -d " " -f 1)
       if [ "$SHA_TEMPLATE" != "$SHA_TARGET" ]; then
         psuc "$TARGET_RAW changed, overwriting."
         cp "$TEMPLATE" "$TARGET"
@@ -110,15 +114,16 @@ function applycp () {
 }
 
 function confirmbefore () {
-  pask "Please confirm: $@ (yes/EXIT/skip)"
-  read choice
+  pask "Please confirm: $* (yes/EXIT/skip)"
+  read -r choice
   movelineup
   movelineup
   if [ "$choice" = "yes" ]; then
     psuc ""
     if [ -z "$DRY_RUN" ]; then
-      eval "$@"
-      if [ "$?" -ne 0 ]; then
+      if "$@"; then
+        pok ""
+      else
         perr "Command failed with status code $?"
         exit 1
       fi
@@ -134,13 +139,11 @@ function confirmbefore () {
 function destcmd () {
   pnot "$@"
   if [ -z "$DRY_RUN" ]; then
-    eval "$@"
-    RET=$?
-    if [ "$RET" -ne 0 ]; then
-      perr "Process exited with code $RET"
-      exit 1
+    if "$@"; then
+      return $?
     else
-      return $RET
+      perr "Process exited with code $?"
+      exit 1
     fi
   else
     movelineup
@@ -149,4 +152,4 @@ function destcmd () {
 }
 
 [ -f "$HOME/dotfiles/is-personal" ]
-PERSONAL=$?
+export PERSONAL=$?

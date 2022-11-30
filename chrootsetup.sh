@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 if [ -d /dotfiles ]; then
-  cd /dotfiles
+  cd /dotfiles || exit
 fi
 
 source lib.sh
@@ -37,7 +37,7 @@ if [ -f /etc/hostname ]; then
   pnot "Hostname already set."
 else
   pask "What is the hostname of this system?"
-  read hn
+  read -r hn
   pnot "Setting hostname to $hn"
   destcmd echo "$hn" \>/etc/hostname
   destcmd echo "127.0.0.1 localhost" \>/etc/hosts
@@ -63,8 +63,8 @@ fi
 destcmd cp /etc/sudoers /etc/sudoers.bkp
 destcmd mv "$TMP_SUDOERS" /etc/sudoers
 pask "What is the primary username for this system?"
-read un
-if ! id $un; then
+read -r un
+if ! id "$un"; then
   pnot "Setting up user account for $un"
   destcmd useradd -m -s /usr/bin/zsh -G sys,wheel "$un"
   pask "Please specify password for $un"
@@ -76,13 +76,13 @@ if which yay >/dev/null; then
 else
   mkdir -p build
   chown -R "$un"":" build
-  pushd build
+  pushd build || exit
   sudo -u "$un" git clone https://aur.archlinux.org/yay.git
-  pushd yay
+  pushd yay || exit
   sudo -u "$un" makepkg -si
-  popd
+  popd || exit
   rm -r yay
-  popd
+  popd || exit
 fi
 
 
@@ -132,7 +132,7 @@ destcmd passwd root
 pask "Setting up zsh config"
 sudo -u "$un" -i sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 sudo -u "$un" -i git clone https://github.com/literalplus/dotfiles
-cp /dotfiles/zshrc-tpl /home/$un/.zshrc
+cp /dotfiles/zshrc-tpl "/home/$un/.zshrc"
 
 
 psec "Firewall"
