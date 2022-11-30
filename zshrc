@@ -1,12 +1,13 @@
 #!/usr/bin/env zsh
-# shellcheck disable=SC2034
+# shellcheck disable=SC2034 shell=bash
 # SC2034 wants us to export all variables but that's not how it works here
 
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
 
 if which go >/dev/null 2>&1; then
-    export PATH=$PATH:$(go env GOPATH)/bin
+  MY_OWN_GOPATH="$(go env GOPATH)"
+  export PATH=$PATH:$MY_OWN_GOPATH/bin
 fi
 
 # Path to your oh-my-zsh installation.
@@ -61,7 +62,9 @@ HIST_STAMPS="yyyy-mm-dd"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git fzf z)
 
-source $ZSH/oh-my-zsh.sh
+# SC1091 Don't follow link
+# shellcheck disable=SC1091
+source "$ZSH/oh-my-zsh.sh"
 
 # User configuration
 
@@ -134,7 +137,7 @@ function mkcd {
     exit 1
   fi
   mkdir "$1" || return 2
-  cd "$1"
+  cd "$1" || return 3
   echo "HENLO $1"
 }
 
@@ -157,6 +160,9 @@ bindkey "^S" prepend-sudo
 
 
 # Automatic appends below this line
+
+# SC1091 Don't follow link
+# shellcheck disable=SC1091
 if [[ -f /usr/share/nvm/init-nvm.sh ]]; then
   source /usr/share/nvm/init-nvm.sh
 fi
