@@ -99,7 +99,10 @@ function display() {
 	line="$(echo "$emoji" | rofi_menu)"
 	exit_code=$?
 
-	line=("$line")
+  # SC2206 causes word splitting, but that's intended as we want to have the emoji itself first
+  #        (input is <emoji> <description multiple words>)
+  # shellcheck disable=SC2206
+	line=($line)
 	last=${line[${#line[@]}-1]}
 	quantifier="${last:${#last}-1:1}"
 	if [[ ! "$quantifier" =~ [0-9] ]]; then
