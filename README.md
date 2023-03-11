@@ -40,6 +40,7 @@ append `cow_spacesize=1G` to the kernel line when booting.
  * Adjust PAM auto lockout (default 3 logins, lock for 10 minutes) https://wiki.archlinux.org/index.php/Security#Lock_out_user_after_three_failed_login_attempts
  * `/etc/pacman.conf` -> `ILoveCandy`, `ParallelDownloads=5`
  * npm global packages without sudo: https://stackoverflow.com/a/59227497
+ * Add yourself to the `wireshark` group
 
 ### GNOME Theme
 GTK Theme: Ant Nebula - [GNOME Look](https://www.gnome-look.org/p/1099856/), [Github](https://github.com/EliverLara/Ant-Nebula)
