@@ -135,6 +135,8 @@ function confirmbefore () {
 }
 
 function _exec_or_eval() {
+  # https://github.com/koalaman/shellcheck/issues/1141
+  # shellcheck disable=SC2124
   lastarg="${@: -1}"
   use_eval="no"
   if [ "$lastarg" = "USING_UNSAFE_EVAL" ]; then
@@ -144,7 +146,7 @@ function _exec_or_eval() {
   if [ -n "$DRY_RUN" ]; then
     pnot "Dry-run, not executing."
   elif [ "$use_eval" = "yes" ]; then
-    if eval "$@"; then
+    if eval "$*"; then
       pok ""
     else
       perr "Command failed with status code $?"

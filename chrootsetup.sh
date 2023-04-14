@@ -116,7 +116,9 @@ fi
 KPARAMS="root=/dev/mapper/cryptroot rootfstype=ext4 add_efi_memmap rd.luks.name=$ROOT_PARTID=cryptroot"
 pask "Kernel line: $KPARAMS (y/N)"
 exitifnok
-cat >/tmp/loader-entry.conf <<<EOF
+# KPARAMS cannot be quoted, quotes are literally inserted into the file
+# shellcheck disable=SC2086
+cat >/tmp/loader-entry.conf <<EOF
 title Arch Linux
 linux /vmlinuz-linux
 initrd /intel-ucode.img
