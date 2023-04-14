@@ -142,7 +142,7 @@ function _exec_or_eval() {
   if [ "$lastarg" = "USING_UNSAFE_EVAL" ]; then
     unset 'argv[-1]'
     use_eval="yes"
-    pok "evaling"
+    pok "evaling $*"
   fi
   if [ -n "$DRY_RUN" ]; then
     pnot "Dry-run, not executing."
