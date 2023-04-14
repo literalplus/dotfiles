@@ -25,25 +25,31 @@ if [ -z "$TMUX" ]; then
 fi
 
 psec "Configure the system (inside chroot)"
-destcmd ln -sf /usr/share/zoneinfo/Europe/Vienna /etc/localtime
-destcmd timedatectl set-ntp true
-destcmd hwclock --systohc
-destcmd sed -i 's/^#en_GB.UTF-8/en_GB.UTF-8/' /etc/locale.gen
-destcmd_unsafe_eval echo "LANG=en_GB.UTF-8" \>/etc/locale.conf
-destcmd locale-gen
-destcmd_unsafe_eval echo "KEYMAP=de-latin1-nodeadkeys" \>/etc/vconsole.conf
+
 
 if [ -f /etc/hostname ]; then
-  pnot "Hostname already set."
+  hn="$(cat /etc/hostname)"
+  pnot "Hostname already set to $hn"
 else
   pask "What is the hostname of this system?"
   read -r hn
   pnot "Setting hostname to $hn"
-  destcmd_unsafe_eval echo "$hn" \>/etc/hostname
-  destcmd_unsafe_eval echo "127.0.0.1 localhost" \>/etc/hosts
-  destcmd_unsafe_eval echo "::1 localhost" \>\>/etc/hosts
-  destcmd_unsafe_eval echo "127.0.1.1 $hn" \>\>/etc/hosts
 fi
+
+destcmd systemd-firstboot \
+  --locale=en_GB.UTF-8 \
+  --keymap=de-latin1-nodeadkeys \
+  --timezone=Europe/Vienna \
+  "--hostname=$hn" \
+  --setup-machine-id \
+  --root=/
+
+# ref: https://github.com/systemd/systemd/issues/798 (this is the same as set-ntp)
+destcmd systemctl enable systemd-timesyncd
+destcmd hwclock --systohc
+destcmd sed -i 's/^#en_GB.UTF-8/en_GB.UTF-8/' /etc/locale.gen
+destcmd locale-gen
+
 
 # Not disabling systemd-resolved -> resolvectl for VPN up/down scripts
 # stub-resolv.conf is configured outside the chroot as per the wiki
