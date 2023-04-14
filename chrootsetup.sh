@@ -62,7 +62,7 @@ psec "Setting up user account"
 pask "Setting up sudo for wheel group"
 TMP_SUDOERS=$(mktemp)
 cp /etc/sudoers "$TMP_SUDOERS"
-sed -i -e 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' "$TMP_SUDOERS"
+sed -i -e 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' "$TMP_SUDOERS"
 if ! visudo -c -f "$TMP_SUDOERS"; then
   perr "Modified sudoers file not longer validates."
   exit 1
