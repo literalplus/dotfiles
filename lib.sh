@@ -159,38 +159,6 @@ function confirmbefore_unsafe_eval () {
   fi
 }
 
-
-function _exec_or_eval() {
-  # https://github.com/koalaman/shellcheck/issues/1141
-  # shellcheck disable=SC2124
-  lastarg="${@: -1}"
-  myargs= ( "$@" )
-  use_eval="no"
-  if [ "$lastarg" = "USING_UNSAFE_EVAL" ]; then
-    pok "might eval $*"
-    unset "myargs[${#myargs[@]}-1]"
-    use_eval="yes"
-    pok "evaling $*"
-  fi
-  if [ -n "$DRY_RUN" ]; then
-    pnot "Dry-run, not executing."
-  elif [ "$use_eval" = "yes" ]; then
-    if eval "$*"; then
-      pok ""
-    else
-      perr "Command failed with status code $?"
-      exit 1
-    fi
-  else
-    if "$@"; then
-      pok ""
-    else
-      perr "Command failed with status code $?"
-      exit 1
-    fi
-  fi
-}
-
 function destcmd () {
   pnot "$@"
   if [ -z "$DRY_RUN" ]; then
