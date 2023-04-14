@@ -140,6 +140,7 @@ function _exec_or_eval() {
   lastarg="${@: -1}"
   use_eval="no"
   if [ "$lastarg" = "USING_UNSAFE_EVAL" ]; then
+    pok "might eval $*"
     unset 'argv[-1]'
     use_eval="yes"
     pok "evaling $*"
