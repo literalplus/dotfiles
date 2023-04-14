@@ -36,6 +36,9 @@ else
   pnot "Setting hostname to $hn"
 fi
 
+destcmd sed -i 's/^#en_GB.UTF-8/en_GB.UTF-8/' /etc/locale.gen
+destcmd locale-gen
+
 destcmd systemd-firstboot \
   --locale=en_GB.UTF-8 \
   --keymap=de-latin1-nodeadkeys \
@@ -47,8 +50,6 @@ destcmd systemd-firstboot \
 # ref: https://github.com/systemd/systemd/issues/798 (this is the same as set-ntp)
 destcmd systemctl enable systemd-timesyncd
 destcmd hwclock --systohc
-destcmd sed -i 's/^#en_GB.UTF-8/en_GB.UTF-8/' /etc/locale.gen
-destcmd locale-gen
 
 
 # Not disabling systemd-resolved -> resolvectl for VPN up/down scripts
