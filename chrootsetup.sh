@@ -100,7 +100,11 @@ confirmbefore sudo -u "$un" yay -Sy --needed systemd-boot-pacman-hook
 psec "Encryption setup"
 echo "Please now configure mkinitcpio for encryption."
 pwrn "Do NOT include the stars. These mark what you need to add!"
-echo "HOOKS=(base *systemd autodetect *keyboard *sd-vconsole modconf block *sd-encrypt filesystems fsck)"
+pnot "Move the keyboard hook before autodetect to include all keyboard drivers in the initramfs."
+pnot "Add sd-vconsole and sd-encrypt (in that order)"
+pnot "Replace keymap and consolefont with sd-vconsole"
+pnot "Replace udev with systemd"
+echo "HOOKS=(base *systemd *keyboard autodetect modconf kms *sd-vconsole block *sd-encrypt filesystems fsck)"
 tmux split-window vim /etc/mkinitcpio.conf
 confirmbefore grep HOOKS /etc/mkinitcpio.conf
 
