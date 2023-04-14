@@ -87,15 +87,15 @@ fi
 
 
 psec "Boot loader (Part I)"
-confirmbefore bootctl install \
-  \&\& sudo -u "$un" yay -Sy --needed systemd-boot-pacman-hook
+confirmbefore bootctl install
+confirmbefore sudo -u "$un" yay -Sy --needed systemd-boot-pacman-hook
 
 psec "Encryption setup"
 echo "Please now configure mkinitcpio for encryption."
 pwrn "Do NOT include the stars. These mark what you need to add!"
 echo "HOOKS=(base *systemd autodetect *keyboard *sd-vconsole modconf block *sd-encrypt filesystems fsck)"
 tmux split-window vim /etc/mkinitcpio.conf
-confirmbefore cat /etc/mkinitcpio.conf \| grep HOOKS
+confirmbefore grep HOOKS /etc/mkinitcpio.conf
 
 psec "Boot loader (Part II)"
 pwrn "This only works on Intel systems! Adapt loader.conf for AMD"
@@ -116,11 +116,17 @@ fi
 KPARAMS="root=/dev/mapper/cryptroot rootfstype=ext4 add_efi_memmap rd.luks.name=$ROOT_PARTID=cryptroot"
 pask "Kernel line: $KPARAMS (y/N)"
 exitifnok
-destcmd echo "title Arch Linux" \>/boot/loader/entries/arch.conf
-destcmd echo "linux /vmlinuz-linux" \>\>/boot/loader/entries/arch.conf
-destcmd echo "initrd /intel-ucode.img" \>\>/boot/loader/entries/arch.conf
-destcmd echo "initrd /initramfs-linux.img" \>\>/boot/loader/entries/arch.conf
-destcmd echo "options $KPARAMS" \>\>/boot/loader/entries/arch.conf
+cat >/tmp/loader-entry.conf <<<EOF
+title Arch Linux
+linux /vmlinuz-linux
+initrd /intel-ucode.img
+options $KPARAMS
+EOF
+
+dim
+cat /tmp/loader-entry.conf
+undim
+destcmd mv /tmp/loader-entry.conf /boot/loader/entries/arch.conf
 
 confirmbefore cat /boot/loader/loader.conf
 confirmbefore mkinitcpio -P

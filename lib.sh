@@ -120,13 +120,11 @@ function confirmbefore () {
   movelineup
   if [ "$choice" = "yes" ] || [ "$choice" = "y" ]; then
     psuc ""
-    if [ -z "$DRY_RUN" ]; then
-      if "$@"; then
-        pok ""
-      else
-        perr "Command failed with status code $?"
-        exit 1
-      fi
+    if _exec_or_eval "$@"; then
+      pok ""
+    else
+      perr "Command failed with status code $?"
+      exit 1
     fi
   elif [ "$choice" = "skip" ]; then
     pwrn "Skipping:      "
@@ -136,19 +134,35 @@ function confirmbefore () {
   fi
 }
 
-function destcmd () {
-  pnot "$@"
-  if [ -z "$DRY_RUN" ]; then
-    if "$@"; then
-      return $?
+function _exec_or_eval() {
+  lastarg="${@: -1}"
+  use_eval="no"
+  if [ "$lastarg" = "USING_UNSAFE_EVAL" ]; then
+    unset 'argv[-1]'
+    use_eval="yes"
+  fi
+  if [ -n "$DRY_RUN" ]; then
+    pnot "Dry-run, not executing."
+  elif [ "$use_eval" = "yes" ]; then
+    if eval "$@"; then
+      pok ""
     else
-      perr "Process exited with code $?"
+      perr "Command failed with status code $?"
       exit 1
     fi
   else
-    movelineup
-    echo "dry "
+    if "$@"; then
+      pok ""
+    else
+      perr "Command failed with status code $?"
+      exit 1
+    fi
   fi
+}
+
+function destcmd () {
+  pnot "$@"
+  _exec_or_eval "$@"
 }
 
 [ -f "$HOME/dotfiles/is-personal" ]

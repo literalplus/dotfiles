@@ -116,7 +116,7 @@ cp "$MIRRORS" "$MIRRORS.backup"
 curl -s "https://archlinux.org/mirrorlist/?country=AT&country=CZ&country=DE&country=SK&country=SI&protocol=https&ip_version=4&use_mirror_status=on" >"$MIRRORSWAP"
 pnot "Mirror list backup placed at $MIRRORS.backup"
 sed -i 's/^#Server/Server/' "$MIRRORSWAP"
-confirmbefore rankmirrors -n 6 "$MIRRORSWAP" \> "$MIRRORS"
+confirmbefore "rankmirrors -n 6 $MIRRORSWAP > $MIRRORS" USING_UNSAFE_EVAL
 dim
 cat "$MIRRORS"
 undim
@@ -124,7 +124,7 @@ undim
 destcmd pacstrap /mnt base linux linux-firmware vim fzf zsh sudo which git nftables iptables-nft base-devel tmux
 
 psec "Configure the system"
-destcmd genfstab -U /mnt \>\> /mnt/etc/fstab
+destcmd genfstab -U /mnt \>\> /mnt/etc/fstab USING_UNSAFE_EVAL
 
 destcmd mkdir -p /mnt/dotfiles
 destcmd cp -r . /mnt/dotfiles
