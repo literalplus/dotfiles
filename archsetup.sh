@@ -131,7 +131,7 @@ destcmd cp -r . /mnt/dotfiles
 # https://wiki.archlinux.org/title/Systemd-resolved#DNS -> cannot be done inside chroot (bind mount)
 destcmd ln -sf /run/systemd/resolve/stub-resolv.conf /mnt/etc/resolv.conf
 psec "Run /dotfiles/chrootsetup.sh to continue setup in the chroot."
-confirmbefore arch-chroot /mnt
+arch-chroot /mnt
 destcmd rm -rf /mnt/dotfiles
 
 psec "Reboot"
