@@ -120,7 +120,9 @@ function confirmbefore () {
   movelineup
   if [ "$choice" = "yes" ] || [ "$choice" = "y" ]; then
     psuc ""
-    if _exec_or_eval "$@"; then
+    if [ -n "$DRY_RUN" ]; then
+      pnot "Dry-run, not executing."
+    elif "$@"; then
       pok ""
     else
       perr "Command failed with status code $?"
@@ -134,14 +136,39 @@ function confirmbefore () {
   fi
 }
 
+function confirmbefore_unsafe_eval () {
+  pask "Please confirm: $* (yes/EXIT/skip)"
+  read -r choice
+  movelineup
+  movelineup
+  if [ "$choice" = "yes" ] || [ "$choice" = "y" ]; then
+    psuc ""
+    if [ -n "$DRY_RUN" ]; then
+      pnot "Dry-run, not executing."
+    elif eval "$*"; then
+      pok ""
+    else
+      perr "Command failed with status code $?"
+      exit 1
+    fi
+  elif [ "$choice" = "skip" ]; then
+    pwrn "Skipping:      "
+  else
+    perr ""
+    exit 1
+  fi
+}
+
+
 function _exec_or_eval() {
   # https://github.com/koalaman/shellcheck/issues/1141
   # shellcheck disable=SC2124
   lastarg="${@: -1}"
+  myargs= ( "$@" )
   use_eval="no"
   if [ "$lastarg" = "USING_UNSAFE_EVAL" ]; then
     pok "might eval $*"
-    unset 'argv[-1]'
+    unset "myargs[${#myargs[@]}-1]"
     use_eval="yes"
     pok "evaling $*"
   fi
@@ -166,7 +193,32 @@ function _exec_or_eval() {
 
 function destcmd () {
   pnot "$@"
-  _exec_or_eval "$@"
+  if [ -z "$DRY_RUN" ]; then
+    if "$@"; then
+      return $?
+    else
+      perr "Process exited with code $?"
+      exit 1
+    fi
+  else
+    movelineup
+    echo "dry "
+  fi
+}
+
+function destcmd_unsafe_eval () {
+  pnot "$@"
+  if [ -z "$DRY_RUN" ]; then
+    if eval "$*"; then
+      return $?
+    else
+      perr "Process exited with code $?"
+      exit 1
+    fi
+  else
+    movelineup
+    echo "dry "
+  fi
 }
 
 [ -f "$HOME/dotfiles/is-personal" ]

@@ -116,7 +116,7 @@ cp "$MIRRORS" "$MIRRORS.backup"
 curl -s "https://archlinux.org/mirrorlist/?country=AT&country=CZ&country=DE&country=SK&country=SI&protocol=https&ip_version=4&use_mirror_status=on" >"$MIRRORSWAP"
 pnot "Mirror list backup placed at $MIRRORS.backup"
 sed -i 's/^#Server/Server/' "$MIRRORSWAP"
-confirmbefore rankmirrors -n 6 "$MIRRORSWAP" \> "$MIRRORS" USING_UNSAFE_EVAL
+confirmbefore_unsafe_eval rankmirrors -n 6 "$MIRRORSWAP" \> "$MIRRORS"
 dim
 cat "$MIRRORS"
 undim
@@ -124,13 +124,14 @@ undim
 destcmd pacstrap /mnt base linux linux-firmware vim fzf zsh sudo which git nftables iptables-nft base-devel tmux
 
 psec "Configure the system"
-destcmd genfstab -U /mnt \>\> /mnt/etc/fstab USING_UNSAFE_EVAL
+destcmd_unsafe_eval genfstab -U /mnt \>\> /mnt/etc/fstab
 
 destcmd mkdir -p /mnt/dotfiles
 destcmd cp -r . /mnt/dotfiles
 # https://wiki.archlinux.org/title/Systemd-resolved#DNS -> cannot be done inside chroot (bind mount)
 destcmd ln -sf /run/systemd/resolve/stub-resolv.conf /mnt/etc/resolv.conf
-confirmbefore arch-chroot /mnt /dotfiles/chrootsetup.sh
+psec "Run /dotfiles/chrootsetup.sh to continue setup in the chroot."
+confirmbefore arch-chroot /mnt
 destcmd rm -rf /mnt/dotfiles
 
 psec "Reboot"
