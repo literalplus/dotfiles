@@ -29,9 +29,9 @@ destcmd ln -sf /usr/share/zoneinfo/Europe/Vienna /etc/localtime
 destcmd timedatectl set-ntp true
 destcmd hwclock --systohc
 destcmd sed -i 's/^#en_GB.UTF-8/en_GB.UTF-8/' /etc/locale.gen
-destcmd echo "LANG=en_GB.UTF-8" \>/etc/locale.conf
+destcmd echo "LANG=en_GB.UTF-8" \>/etc/locale.conf USING_UNSAFE_EVAL
 destcmd locale-gen
-destcmd echo "KEYMAP=de-latin1-nodeadkeys" \>/etc/vconsole.conf
+destcmd echo "KEYMAP=de-latin1-nodeadkeys" \>/etc/vconsole.conf USING_UNSAFE_EVAL
 
 if [ -f /etc/hostname ]; then
   pnot "Hostname already set."
@@ -39,17 +39,17 @@ else
   pask "What is the hostname of this system?"
   read -r hn
   pnot "Setting hostname to $hn"
-  destcmd echo "$hn" \>/etc/hostname
-  destcmd echo "127.0.0.1 localhost" \>/etc/hosts
-  destcmd echo "::1 localhost" \>\>/etc/hosts
-  destcmd echo "127.0.1.1 $hn" \>\>/etc/hosts
+  destcmd echo "$hn" \>/etc/hostname USING_UNSAFE_EVAL
+  destcmd echo "127.0.0.1 localhost" \>/etc/hosts USING_UNSAFE_EVAL
+  destcmd echo "::1 localhost" \>\>/etc/hosts USING_UNSAFE_EVAL
+  destcmd echo "127.0.1.1 $hn" \>\>/etc/hosts USING_UNSAFE_EVAL
 fi
 
 # Not disabling systemd-resolved -> resolvectl for VPN up/down scripts
 # stub-resolv.conf is configured outside the chroot as per the wiki
 confirmbefore systemctl disable systemd-networkd.service \
   \&\& pacman -Sy --needed networkmanager \
-  \&\& systemctl enable NetworkManager
+  \&\& systemctl enable NetworkManager USING_UNSAFE_EVAL
 
 psec "Setting up user account"
 pask "Setting up sudo for wheel group"
