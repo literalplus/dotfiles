@@ -118,7 +118,7 @@ function confirmbefore () {
   read -r choice
   movelineup
   movelineup
-  if [ "$choice" = "yes" ]; then
+  if [ "$choice" = "yes" ] || [ "$choice" = "y" ]; then
     psuc ""
     if [ -z "$DRY_RUN" ]; then
       if "$@"; then
