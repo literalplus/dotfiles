@@ -16,4 +16,4 @@ confirmbefore sudo vim /etc/mkinitcpio.conf
 confirmbefore sudo mkinitcpio -P
 
 psec Optimus - Use only NVIDIA
-applycp "10-nvidia-drm-outputclass-custom.conf" "/etc/X11/xorg.conf.d/10-nvidia-drm-outputclass-custom.conf"
+sudo bash -c "source $PWD/lib.sh && applycp 10-nvidia-drm-outputclass-custom.conf /etc/X11/xorg.conf.d/10-nvidia-drm-outputclass-custom.conf"
