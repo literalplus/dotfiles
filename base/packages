@@ -48,6 +48,7 @@ inotify-tools
 keepass
 libappindicator-gtk3
 libreoffice-fresh
+linux-headers
 muparser
 libmythes
 mythes-de

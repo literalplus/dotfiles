@@ -23,7 +23,7 @@ nmcli dev wifi connect <<SSID>> password "<<password>>"
 
 ### Manual steps
 
- * Install NVIDIA driver
+ * Install NVIDIA driver https://wiki.archlinux.org/title/NVIDIA
  * Switch to NVIDIA-only mode for external screens / DisplayLink support https://wiki.archlinux.org/index.php/NVIDIA_Optimus#Use_NVIDIA_graphics_only
  * Set up shortcuts in GNOME
   * Disable default screenshot shortcuts under "Screenshots"
@@ -60,4 +60,9 @@ Icon Theme: Boston - [GNOME Look](https://www.gnome-look.org/p/1012402/), [Githu
 sudo grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=FreshGRUB
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 ````
+## systemd-boot commands
 
+```bash
+sudo systemctl restart systemd-boot-update
+# NOTE: Secure Boot / PreLoader move!
+```
