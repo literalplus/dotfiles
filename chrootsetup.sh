@@ -167,7 +167,7 @@ psec "User accounts (Part II)"
 pask "Please set a strong root password."
 destcmd passwd root
 pask "Setting up zsh config"
-sudo -u "$un" -i sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+sudo -u "$un" -i sh -c "\"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\"" --unattended
 sudo -u "$un" -i git clone https://github.com/literalplus/dotfiles
 cp /dotfiles/zshrc-tpl "/home/$un/.zshrc"
 
