@@ -114,12 +114,12 @@ read -r secboo
 if [ "$secboo" = "yes" ]; then
   psuc "Ok, using Secure Boot"
   # assume that systemd-boot-pacman-hook uses 95
-  cp /dotfiles/96-bootctl-copy-loader.hook /usr/share/libalpm/hooks/96-bootctl-copy-loader.hook
+  destcmd cp /dotfiles/96-bootctl-copy-loader.hook /usr/share/libalpm/hooks/96-bootctl-copy-loader.hook
   destcmd sudo -u "$un" yay -Sy --needed preloader-signed
   destcmd cp /usr/share/preloader-signed/{PreLoader,HashTool}.efi /boot/EFI/systemd
   confirmbefore bootctl install
   # sadly, PreLoader requires this exact name
-  cp /boot/EFI/systemd/systemd-bootx64.efi /boot/EFI/systemd/loader.efi
+  destcmd cp /boot/EFI/systemd/systemd-bootx64.efi /boot/EFI/systemd/loader.efi
   confirmbefore efibootmgr --unicode --disk /dev/nvme0n1 --part 1 --create --label "PreLoader" --loader /EFI/systemd/PreLoader.efi
 else
   psuc "Not using Secure Boot."
