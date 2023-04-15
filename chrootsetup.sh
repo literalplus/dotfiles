@@ -178,7 +178,7 @@ destcmd systemctl enable nftables
 destcmd systemctl start nftables
 
 psec "GUI"
-destcmd pacman -Sy gnome
+# Gnome packages are installed later via sysapply.sh
 destcmd pacman -Sy pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber
 
 psec "Exit chroot"
