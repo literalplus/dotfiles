@@ -150,6 +150,7 @@ cat >/tmp/loader-entry.conf <<EOF
 title Arch Linux
 linux /vmlinuz-linux
 initrd /intel-ucode.img
+initrd /initramfs-linux.img
 options $KPARAMS
 EOF
 

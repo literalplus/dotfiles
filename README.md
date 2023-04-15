@@ -8,9 +8,9 @@ Use `apply.sh` to apply user-level configuration.
 Use `sysapply.sh` to apply system-level configuration.
 
 ## Arch setup
-Use `archsetup.sh` for Arch Linux setup from archiso.
+Use `archsetup.sh` for Arch Linux setup from archboot (not archiso; it doesn't have Secure Boot support). https://pkgbuild.com/~tpowa/archboot/web/archboot.html
 
-Note that the default kernel line allocates no extra space, which you need to clone the git repo. To change this,
+Note that for the default vanilla archiso, the default kernel line allocates no extra space, which you need to clone the git repo. To change this,
 append `cow_spacesize=1G` to the kernel line when booting.
 
 ### Manual steps

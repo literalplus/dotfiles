@@ -27,4 +27,8 @@ cleaning up old hashes can be done by installing the KeyTool.efi and booting it 
 pacman -S efitools
 cp /usr/share/efitools/efi/KeyTool.efi /boot/EFI/systemd/KeyTool.efi
 
+using just that setup however fails booting with
 
+Kernel panic - not syncing: VFS: Unable to mout root fs on unknown-block(0,0)
+
+That means that there is a problem with the initramfs.
