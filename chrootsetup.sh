@@ -92,11 +92,6 @@ else
   popd || exit
 fi
 
-
-psec "Boot loader (Part I)"
-confirmbefore bootctl install
-confirmbefore sudo -u "$un" yay -Sy --needed systemd-boot-pacman-hook
-
 psec "Encryption setup"
 echo "Please now configure mkinitcpio for encryption."
 pwrn "Do NOT include the stars. These mark what you need to add!"
@@ -108,9 +103,28 @@ echo "HOOKS=(base *systemd *keyboard autodetect modconf kms *sd-vconsole block *
 tmux split-window vim /etc/mkinitcpio.conf
 confirmbefore grep HOOKS /etc/mkinitcpio.conf
 
-psec "Boot loader (Part II)"
+psec "Boot loader"
 pwrn "This only works on Intel systems! Adapt loader.conf for AMD"
 destcmd pacman -Sy --needed intel-ucode
+destcmd sudo -u "$un" yay -Sy --needed systemd-boot-pacman-hook
+
+pask "Please select whether to use SecureBoot: (yes/no)"
+read -r secboo
+
+if [ "$secboo" = "yes" ]; then
+  psuc "Ok, using Secure Boot"
+  # assume that systemd-boot-pacman-hook uses 95
+  cp ./96-bootctl-copy-loader.hook /usr/share/libalpm/hooks/96-bootctl-copy-loader.hook
+  destcmd sudo -u "$un" yay -Sy --needed preloader-signed
+  destcmd cp /usr/share/preloader-signed/{PreLoader,HashTool}.efi /boot/EFI/systemd
+  confirmbefore bootctl install
+  # sadly, PreLoader requires this exact name
+  cp /boot/EFI/systemd/systemd-bootx64.efi /boot/EFI/systemd/loader.efi
+  confirmbefore efibootmgr --unicode --disk /dev/nvme0n1 --part 1 --create --label "PreLoader" --loader /EFI/systemd/PreLoader.efi
+else
+  psuc "Not using Secure Boot."
+  confirmbefore bootctl install
+fi
 
 ALLDISKS=$(fdisk -l | grep /dev/ | grep "Linux filesystem" | grep -v "Disk /dev/")
 if ! ROOT_PART=$(echo "$ALLDISKS" | fzf --header="Encrypted root partition (again)"); then
@@ -161,8 +175,6 @@ destcmd systemctl start nftables
 psec "GUI"
 destcmd pacman -Sy gnome
 destcmd pacman -Sy pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber
-destcmd localectl set-x11-keymap de nodeadkeys
-
 
 psec "Exit chroot"
 

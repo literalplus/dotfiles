@@ -1,0 +1,11 @@
+# assumes that we first have this on 95: https://aur.archlinux.org/cgit/aur.git/tree/systemd-boot.hook?h=systemd-boot-pacman-hook
+# ref: https://wiki.archlinux.org/title/Systemd-boot#pacman_hook
+[Trigger]
+Type = Package
+Operation = Upgrade
+Target = systemd
+
+[Action]
+Description = Copy bootctl binary for preloader
+When = PostTransaction
+Exec = /usr/bin/cp /boot/EFI/systemd/systemd-bootx64.efi /boot/EFI/systemd/loader.efi
