@@ -13,6 +13,14 @@ Use `archsetup.sh` for Arch Linux setup from archboot (not archiso; it doesn't h
 Note that for the default vanilla archiso, the default kernel line allocates no extra space, which you need to clone the git repo. To change this,
 append `cow_spacesize=1G` to the kernel line when booting.
 
+After rebooting, WiFi can be temporarily set up like this:
+
+```bash
+nmcli radio wifi on
+nmcli dev wifi list
+nmcli dev wifi connect <<SSID>> password "<<password>>"
+```
+
 ### Manual steps
 
  * Install NVIDIA driver

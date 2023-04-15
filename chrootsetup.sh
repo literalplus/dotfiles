@@ -55,6 +55,7 @@ destcmd hwclock --systohc
 # Not disabling systemd-resolved -> resolvectl for VPN up/down scripts
 # stub-resolv.conf is configured outside the chroot as per the wiki
 confirmbefore_unsafe_eval systemctl disable systemd-networkd.service \
+  \&\& systemctl enable systemd-resolved.service \
   \&\& pacman -Sy --needed networkmanager \
   \&\& systemctl enable NetworkManager
 
