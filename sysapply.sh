@@ -57,7 +57,7 @@ fi
 
 function yayfromfile () {
   FILECAT=$1
-  yay -S --color=always --needed $(tr "\n" " " < "$FILECAT/packages") 2>&1 | grep -v --color=always "is up to date -- skipping"
+  yay -S --color=always --needed $(tr "\n" " " < "$FILECAT/packages") 2>&1
 }
 
 psec "Base packages"
