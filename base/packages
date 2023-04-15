@@ -14,7 +14,6 @@ fzf
 gdm
 gedit
 gimp
-gnome
 gnome-calculator
 gnome-clocks
 gnome-calendar
@@ -72,7 +71,6 @@ tlpui-git
 tmux
 totem
 traceroute
-units
 veracrypt
 viewnior
 vim-pathogen
