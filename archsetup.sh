@@ -15,7 +15,7 @@ if [ "$(id -u)" -ne 0 ]; then
   exit 1
 fi
 
-destcmd pacman -Sy --needed tmux
+destcmd pacman -Sy --needed tmux fzf pacman-contrib
 
 if [ -z "$TMUX" ]; then
   pwrn "It is required to run the setup in tmux!"
@@ -40,8 +40,6 @@ exitifnok
 
 pnot "Enabling NTP..."
 destcmd timedatectl set-ntp true
-pnot "Installing build dependencies..."
-destcmd pacman -S --needed fzf pacman-contrib
 
 psec "Partitioning the disks"
 dim

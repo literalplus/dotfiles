@@ -6,7 +6,7 @@ if [ "$(id -u)" -ne 0 ]; then
   exit 1
 fi
 
-destcmd pacman -Sy --needed tmux
+destcmd pacman -Sy --needed tmux fzf pacman-contrib
 
 if [ -z "$TMUX" ]; then
   pwrn "It is required to run the setup in tmux!"
