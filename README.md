@@ -23,8 +23,12 @@ nmcli dev wifi connect <<SSID>> password "<<password>>"
 
 ### Manual steps
 
- * Install NVIDIA driver https://wiki.archlinux.org/title/NVIDIA
+ * `localectl set-x11-keymap de` (not possible in chroot)
+ * `sudo systemctl enable gdm`
+ * Install NVIDIA driver https://wiki.archlinux.org/title/NVIDIA -- `./nvidia-setup.sh`
  * Switch to NVIDIA-only mode for external screens / DisplayLink support https://wiki.archlinux.org/index.php/NVIDIA_Optimus#Use_NVIDIA_graphics_only
+  * Done by `./nvidia-setup.sh`
+  * Doesn't seem necessary to edit `~/.xinitrc`
  * Set up shortcuts in GNOME
   * Disable default screenshot shortcuts under "Screenshots"
   * Disable Windows / Move window shortcut
@@ -34,20 +38,21 @@ nmcli dev wifi connect <<SSID>> password "<<password>>"
   * `Audio previous -> dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous`
   * `Audio play -> dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause`
   * `Print -> screenwrap-open /tmp/ viewnior -a`
-  * `Shift+Print -> screenwrap-open /home/lit/Screenshots/ -a`
+  * `Shift+Print -> screenwrap-open /home/lit/Screenshots/ viewnior -a`
   * `Ctrl+Print -> flameshot gui`
   * `Super+X -> albert toggle`
   * `Super+R -> gnome-terminal`
   * `Super+V -> copyq toggle`
   * `Super+Y -> rofi-window`
   * `Super+F -> context-select-k9s`
- * Disable conflicting Ctrl-Shift-U shortcut in `ibus-setup` utility
+ * Disable conflicting Ctrl-Shift-U shortcut in `ibus-setup` utility (Install `ibus` for this)
  * Desktop background
  * Nextcloud
  * Telegram
  * Adjust PAM auto lockout (default 3 logins, lock for 10 minutes) https://wiki.archlinux.org/index.php/Security#Lock_out_user_after_three_failed_login_attempts
  * `/etc/pacman.conf` -> `ILoveCandy`, `ParallelDownloads=5`
- * npm global packages without sudo: https://stackoverflow.com/a/59227497
+ * `volta install node && volta setup`
+ * npm global packages without sudo: https://stackoverflow.com/a/59227497 (`npm config set prefix '~/.local/'`)
  * Add yourself to the `wireshark` group
 
 ### GNOME Theme
@@ -59,10 +64,12 @@ Icon Theme: Boston - [GNOME Look](https://www.gnome-look.org/p/1012402/), [Githu
 ````bash
 sudo grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=FreshGRUB
 sudo grub-mkconfig -o /boot/grub/grub.cfg
+sudo mkinitcpio -P
 ````
 ## systemd-boot commands
 
 ```bash
 sudo systemctl restart systemd-boot-update
+sudo mkinitcpio -P
 # NOTE: Secure Boot / PreLoader move!
 ```
