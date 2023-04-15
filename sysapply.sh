@@ -29,6 +29,7 @@ psec "Setting up etckeeper"
 if [[ ! -d /etc/.git ]]; then
   pnot "No /etc/.git - Proceeding with setup."
   pushd /etc >/dev/null || exit
+  destcmd yay -Sy etckeeper
   confirmbefore sudo etckeeper init
   HOSTN="$(hostname 2>/dev/null || hostnamectl hostname 2>/dev/null || echo unknown)"
   destcmd sudo git config --local user.name "$HOSTN etckeeper"
