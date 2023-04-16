@@ -54,6 +54,7 @@ nmcli dev wifi connect <<SSID>> password "<<password>>"
  * `volta install node && volta setup`
  * npm global packages without sudo: https://stackoverflow.com/a/59227497 (`npm config set prefix '~/.local/'`)
  * Add yourself to the `wireshark` group
+ * Docker Secret Service: https://aur.archlinux.org/packages/docker-credential-secretservice + edit `~/.docker/config.json` https://aur.archlinux.org/packages/docker-credential-secretservice
 
 ### GNOME Theme
 GTK Theme: Ant Nebula - [GNOME Look](https://www.gnome-look.org/p/1099856/), [Github](https://github.com/EliverLara/Ant-Nebula)
