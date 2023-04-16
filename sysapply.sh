@@ -72,12 +72,10 @@ if [ "$PERSONAL" -eq 0 ]; then
 fi
 
 psec "Firewall (nftables)"
-sudo bash -c "source $PWD/../lib.sh && applycp nftables.conf /etc/nftables.conf"
+sudo bash -c "source $PWD/../lib.sh && applycp installation/nftables.conf /etc/nftables.conf"
 
 psec "Workarounds"
 # none atm !
-
-# TODO: https://wiki.archlinux.org/title/Nftables#Working_with_Docker
 
 psec "Emoji Fonts"
 applycp "base/75-noto-color-emoji.conf" "/etc/fonts/conf.avail/75-noto-color-emoji.conf"

@@ -87,6 +87,58 @@ Docker login
 
 See: https://wiki.archlinux.org/title/Nftables#Working_with_Docker
 
+#### Network Namespaces for nftables
+
+```bash
+sudo mkdir -p /etc/systemd/system/docker.service.d/
+sudo cp docker-netns.conf /etc/systemd/system/docker.service.d/netns.conf
+```
+
+This uses a veth pair on the `192.168.250.0/24` network with the sides
+assigned to `192.168.250.10` (host) and `192.168.250.11` (docker).
+
+The Docker side is default-routed via the host, and the host side receives
+a route for the Docker networks. It is crucial that the routed network matches
+the network that Docker actually uses. Also note that it is not possible to fully
+overlap the bridge network with Docker's IPAM network, as it will (rightfully)
+complain that no IP addresses are available. With our setup, it would detect that
+this specific `/24` is unavailable and just assign the remaining networks.
+However, it is not possible to add a route ion the host that overlaps with
+the bridge IP space, so we have to use disjoint networks.
+
+As a result, `192.168.128.0/18` is left for Docker to assign. A different setup
+could be used by relying on other private networks (e.g. using IPs from `192.168.0.0/17`),
+but most of these are sadly already used & specifically the upper half of `192.168.0.0`
+is recommended for the Docker network by my company, thus this one should be safe to use.
+
+Docker wants to resolve DNS queries at `127.0.0.53` (systemd-resolved stub resolver),
+which doesn't work any more in the separate network namespace. To solve this:
+
+```bash
+sudo mkdir -p /etc/systemd/resolved.conf.d/
+sudo cp 12-docker-access.conf /etc/systemd/resolved.conf.d/12-docker-access.conf
+```
+
+Finally, let's also inform Docker about our intentions:
+
+`/etc/docker/daemon.json`
+
+```json
+{
+    "registry-mirrors": ["https://docker-mirror.internal.cloudflight.io", "https://mirror.gcr.io"],
+    "default-address-pools": [
+        {
+            "base": "192.168.128.0/18",
+            "size": 24
+        }
+    ],
+    "dns": ["192.168.250.10"]
+}
+```
+
+A nice side-effect of this setup is that Docker containers can also use any
+VPN connections the host may have running. This is especially useful in
+corporate networks.
 
 
 ### Sound card not recognised

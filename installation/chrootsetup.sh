@@ -173,7 +173,7 @@ cp /dotfiles/zshrc-tpl "/home/$un/.zshrc"
 
 
 psec "Firewall"
-cp /dotfiles/nftables.conf /etc/nftables.conf
+cp /dotfiles/installation/nftables.conf /etc/nftables.conf
 destcmd systemctl enable nftables
 destcmd systemctl start nftables
 
