@@ -78,10 +78,20 @@ Disable conflicting Ctrl-Shift-U shortcut in `ibus-setup` utility (Install `ibus
  * Nextcloud
  * Telegram
  * Desktop background
+ * IDE, Maven, NPM, Docker
+
+### Sound card not recognised
+
+Newer laptops might need the `sof-firmware` package for the internal sound card to be recognised properly.
 
 ### GNOME Theme
 GTK Theme: Ant Nebula - [GNOME Look](https://www.gnome-look.org/p/1099856/), [Github](https://github.com/EliverLara/Ant-Nebula)
+
+-> `~/.themes`
+
 Icon Theme: Boston - [GNOME Look](https://www.gnome-look.org/p/1012402/), [Github](https://github.com/heychrisd/Boston-Icons)
+
+-> `~/.icons`
 
 ## Re-install Bootloader when necessary
 
