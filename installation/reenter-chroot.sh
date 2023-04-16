@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source lib.sh
+source ../lib.sh
 
 if [ "$(id -u)" -ne 0 ]; then
   perr "We need root for this!"
@@ -43,10 +43,10 @@ destcmd mkdir -p /mnt/boot
 confirmbefore mount "$EFI_PART" /mnt/boot
 
 destcmd mkdir -p /mnt/dotfiles
-destcmd cp -r . /mnt/dotfiles
+destcmd cp -r .. /mnt/dotfiles
 # https://wiki.archlinux.org/title/Systemd-resolved#DNS -> cannot be done inside chroot (bind mount)
 destcmd ln -sf /run/systemd/resolve/stub-resolv.conf /mnt/etc/resolv.conf
-psec "Run /dotfiles/chrootsetup.sh to continue setup in the chroot."
+psec "Run /dotfiles/installation/chrootsetup.sh to continue setup in the chroot."
 arch-chroot /mnt
 destcmd rm -rf /mnt/dotfiles
 

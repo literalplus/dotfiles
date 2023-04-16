@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-if [ -d /dotfiles ]; then
-  cd /dotfiles || exit
+if [ -d /dotfiles/installation ]; then
+  cd /dotfiles/installation || exit
 fi
 
-source lib.sh
+source ../lib.sh
 
 if [ -z "$DRY_RUN" ]; then
   pwrn "NOT doing a dry run!"
@@ -115,7 +115,7 @@ read -r secboo
 if [ "$secboo" = "yes" ]; then
   psuc "Ok, using Secure Boot"
   # assume that systemd-boot-pacman-hook uses 95
-  destcmd cp /dotfiles/96-bootctl-copy-loader.hook /usr/share/libalpm/hooks/96-bootctl-copy-loader.hook
+  destcmd cp /dotfiles/installation/96-bootctl-copy-loader.hook /usr/share/libalpm/hooks/96-bootctl-copy-loader.hook
   destcmd sudo -u "$un" yay -Sy --needed preloader-signed sbsigntools
   destcmd cp /usr/share/preloader-signed/{PreLoader,HashTool}.efi /boot/EFI/systemd
   confirmbefore bootctl install

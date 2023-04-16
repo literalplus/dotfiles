@@ -69,7 +69,6 @@ Disable conflicting Ctrl-Shift-U shortcut in `ibus-setup` utility (Install `ibus
  * `volta install node && volta setup`
  * npm global packages without sudo: https://stackoverflow.com/a/59227497 (`npm config set prefix '~/.local/'`)
  * Add yourself to the `wireshark` group
- * Docker Secret Service: https://aur.archlinux.org/packages/docker-credential-secretservice + edit `~/.docker/config.json` https://aur.archlinux.org/packages/docker-credential-secretservice
 
 ### Set up applications
 
@@ -78,7 +77,17 @@ Disable conflicting Ctrl-Shift-U shortcut in `ibus-setup` utility (Install `ibus
  * Nextcloud
  * Telegram
  * Desktop background
- * IDE, Maven, NPM, Docker
+ * IDE, Maven, NPM
+
+### Docker
+
+Docker Secret Service: https://aur.archlinux.org/packages/docker-credential-secretservice + edit `~/.docker/config.json` https://aur.archlinux.org/packages/docker-credential-secretservice
+
+Docker login
+
+See: https://wiki.archlinux.org/title/Nftables#Working_with_Docker
+
+
 
 ### Sound card not recognised
 
