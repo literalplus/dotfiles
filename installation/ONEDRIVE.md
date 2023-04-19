@@ -27,6 +27,8 @@ Save to ~/keepassxc-backups/backintime
 
 Schedule repeatedly (anacron) every hour (otherwise it might skip executions if the PC was off).
 
+Don't forget to `systemctl enable cronie`, otherwise it won't really work.
+
 #### Include
 
 Include kdbx file
