@@ -7,4 +7,4 @@ Use `apply.sh` to apply user-level configuration.
 
 Use `sysapply.sh` to apply system-level configuration.
 
-Installation: [INSTALL.md](docs/INSTALL.md)
+Installation: [INSTALL.md](installation/INSTALL.md)
