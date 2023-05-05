@@ -140,12 +140,7 @@ A nice side-effect of this setup is that Docker containers can also use any
 VPN connections the host may have running. This is especially useful in
 corporate networks.
 
-To make this work, IPv4 Forwarding needs to be enabled. Otherwise, packets will
-only pass prerouting:
-
-```bash
-sudo sysctl -w net.ipv4.ip_forward=1
-```
+To make this work, IPv4 Forwarding needs to be enabled. The systemd hook does this automatically when starting Docker.
 
 
 ### Sound card not recognised
