@@ -21,7 +21,9 @@ done
 confirmbefore sudo systemctl daemon-reload
 psec "Enabling installed unit files"
 for unit in *; do
-  sudo systemctl enable "$unit"
+  if [[ "$unit" != *"@.service" ]]; then
+    sudo systemctl enable "$unit"
+  fi
 done
 popd >/dev/null || exit
 

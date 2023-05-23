@@ -1,0 +1,13 @@
+[Unit]
+Description=Socat Docker Loopback
+After=docker.service
+
+[Service]
+Type=simple
+SyslogIdentifier=socat-docker-lo
+
+ExecStart=/usr/local/bin/lo-socat-docker %I
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
