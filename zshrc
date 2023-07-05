@@ -158,6 +158,10 @@ zle -N prepend-sudo
 
 bindkey "^S" prepend-sudo
 
+function cargo-pager {
+   cargo build 2>&1 --color=always | less
+}
+
 
 # Automatic appends below this line
 
