@@ -63,14 +63,19 @@ function yayfromfile () {
 }
 
 psec "Base packages"
-yayfromfile base
+confirmbefore yayfromfile base
+
+pnot "fail2ban sshd config"
+F2B_CONF_NAME="fail2ban-sshd-dotfiles.conf"
+sudo bash -c "source $PWD/lib.sh && applycp \"base/$F2B_CONF_NAME\" \"/etc/fail2ban/jail.d/$F2B_CONF_NAME\" overwrite"
+sudo systemctl enable fail2ban
 
 psec "Code packages"
-yayfromfile code
+confirmbefore yayfromfile code
 
 if [ "$PERSONAL" -eq 0 ]; then
   psec "Personal packages"
-  yayfromfile personal
+  confirmbefore yayfromfile personal
 fi
 
 psec "Firewall (nftables)"

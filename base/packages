@@ -8,6 +8,7 @@ dhcpcd
 etckeeper
 evince
 exfat-utils
+fail2ban
 fd
 file-roller
 firefox
