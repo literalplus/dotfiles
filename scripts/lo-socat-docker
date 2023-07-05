@@ -2,4 +2,4 @@
 
 echo "forwarding $1"
 
-/usr/bin/socat TCP-LISTEN:$1,reuseaddr,fork TCP4:192.168.250.11:$1
+/usr/bin/socat "TCP-LISTEN:$1,reuseaddr,fork" "TCP4:192.168.250.11:$1"

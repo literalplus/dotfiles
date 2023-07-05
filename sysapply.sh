@@ -59,6 +59,9 @@ fi
 
 function yayfromfile () {
   FILECAT=$1
+  # Word splitting is intended here, each package is a separate
+  # argument.
+  # shellcheck disable=SC2046
   yay -S --color=always --needed $(tr "\n" " " < "$FILECAT/packages") 2>&1
 }
 
