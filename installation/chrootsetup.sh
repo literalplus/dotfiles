@@ -3,6 +3,7 @@ if [ -d /dotfiles/installation ]; then
   cd /dotfiles/installation || exit
 fi
 
+# shellcheck source=lib.sh
 source ../lib.sh
 
 if [ -z "$DRY_RUN" ]; then

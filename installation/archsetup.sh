@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+# shellcheck source=lib.sh
 source ../lib.sh
 
 if [ -z "$DRY_RUN" ]; then

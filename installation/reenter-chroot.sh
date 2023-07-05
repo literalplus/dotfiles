@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+# shellcheck source=lib.sh
 source ../lib.sh
 
 if [ "$(id -u)" -ne 0 ]; then

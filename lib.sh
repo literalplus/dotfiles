@@ -189,5 +189,9 @@ function destcmd_unsafe_eval () {
   fi
 }
 
-[ -f "$HOME/dotfiles/is-personal" ]
-export PERSONAL=$?
+
+if [ -f "$HOME/dotfiles/is-personal" ]; then 
+    export PERSONAL=1
+else
+    export PERSONAL=0
+fi
