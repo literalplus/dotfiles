@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+sensors coretemp-isa-0000 | sed "s/(.*//"
+
