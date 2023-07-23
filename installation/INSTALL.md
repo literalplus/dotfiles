@@ -46,6 +46,7 @@ Reboot to test GDM boot.
 
 * Disable default screenshot shortcuts under "Screenshots"
 * Disable Windows / Move window shortcut
+* Change `Switch windows directly` to `Alt-Tab`, this also disables the default "Switch applications" binding for it.
 * `Super+U -> /usr/local/bin/rofi-uuid`
 * `Super+. -> /usr/local/bin/rofi-emoji`
 * `Audio next -> dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next`
