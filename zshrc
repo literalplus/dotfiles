@@ -159,7 +159,12 @@ zle -N prepend-sudo
 bindkey "^S" prepend-sudo
 
 function cargo-pager {
-   cargo build 2>&1 --color=always | less
+  cargo build 2>&1 --color=always | less
+}
+
+function browse-pacman {
+  # from Arch Wiki: https://wiki.archlinux.org/title/pacman/Tips_and_tricks#Browsing_packages
+  pacman -Qq | fzf --preview 'pacman -Qil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'
 }
 
 
