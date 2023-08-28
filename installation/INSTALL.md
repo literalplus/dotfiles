@@ -143,6 +143,14 @@ corporate networks.
 
 To make this work, IPv4 Forwarding needs to be enabled. The systemd hook does this automatically when starting Docker.
 
+#### Issue: Fails to find any entrypoint
+
+```
+➜  ~ docker run --rm alpine:3        
+docker: Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: exec: "/bin/sh": stat /bin/sh: no such file or directory: unknown.
+```
+
+This means that containerd and docker are not running in the same filesystem namespace (`PrivateMounts=yes` on `docker.service`). 
 
 ### Sound card not recognised
 
