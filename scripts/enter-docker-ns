@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+DOCKER_PID=$(ps -eo pid=,args= | awk '$2 ~ /dockerd/ {print $1}')
+
+nsenter -t "$DOCKER_PID" --net sudo -u "$(logname)" -- "${@}"

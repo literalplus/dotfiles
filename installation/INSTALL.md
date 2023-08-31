@@ -152,6 +152,12 @@ docker: Error response from daemon: failed to create task for container: failed 
 
 This means that containerd and docker are not running in the same filesystem namespace (`PrivateMounts=yes` on `docker.service`). 
 
+#### Run a command in the docker netns
+
+Some applications (*cough* Testcontainers) expose ports dynamically.
+Use `sudo enter-docker-ns <your command>` to run a command in the Docker namespace
+where dynamic ports work.
+
 ### Sound card not recognised
 
 Newer laptops might need the `sof-firmware` package for the internal sound card to be recognised properly.
