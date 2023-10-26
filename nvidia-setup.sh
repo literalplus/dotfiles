@@ -17,3 +17,10 @@ confirmbefore sudo mkinitcpio -P
 
 psec Optimus - Use only NVIDIA
 sudo bash -c "source $PWD/lib.sh && applycp 10-nvidia-drm-outputclass-custom.conf /etc/X11/xorg.conf.d/10-nvidia-drm-outputclass-custom.conf"
+
+psec "Enable Kernel Modesetting"
+pnot "Add the kernel parameter: nvidia-drm.modeset=1"
+pnot "" 
+pnot "For GRUB, edit /etc/default/grub"
+pnot "For bootctl, edit \$ESP/loader/entries/arch.conf (or similar)."
+bash

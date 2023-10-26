@@ -29,16 +29,52 @@ Complete further setup:
 localectl set-x11-keymap de # not possible in chroot
 ./sysapply.sh
 ./apply.sh
-# NVIDIA graphics card setup; check for changes:
-# ref: https://wiki.archlinux.org/title/NVIDIA
-# ref: https://wiki.archlinux.org/index.php/NVIDIA_Optimus#Use_NVIDIA_graphics_only (DisplayLink)
-# Editing ~/.xinitrc doesn't seem to be necessary
-./nvidia-setup.sh
-
 sudo systemctl enable gdm
 ```
 
+## NVIDIA Drivers
+
+NVIDIA graphics card setup; check for changes:
+
+https://wiki.archlinux.org/title/NVIDIA
+
+https://wiki.archlinux.org/index.php/NVIDIA_Optimus#Use_NVIDIA_graphics_only
+
+Editing ~/.xinitrc doesn't seem to be necessary.
+
+We are using only the NVIDIA GPU and disabling the Intel GPU, since that seemed to be the only working option with
+DisplayLink, which may or may not have changed in the meantime.
+
+Viable (but not yet tested) other options options:
+ * https://wiki.archlinux.org/title/NVIDIA_Optimus#Using_PRIME_render_offload - official
+ * https://wiki.archlinux.org/title/NVIDIA_Optimus#Using_switcheroo-control - Bumblebee-like, specific to GNOME, controlled
+    by desktop entries. Unclear if it has the same performance issues.
+ * https://wiki.archlinux.org/title/NVIDIA_Optimus#Using_NVidia-eXec - experimental solution also working on Wayland,
+    apparently much better performance.
+
+**Note:** All of these options are mutually exclusive, if you test one approach and decide for another, you must ensure to revert any configuration changes done by following one approach before attempting another method, otherwise file conflicts and undefined behaviours may arise.
+
+Note that the script asks you to add the KMS modesetting parameter. Whether this is necessary or useful depends on the
+selected option. In the default setup, it should be used.
+
+```
+./nvidia-setup.sh
+```
+
+NVIDIA needs some additional love to work with Wayland on GDM. This may or may not conflict with NVIDIA Optimus.
+The following advice is also untested as of yet.
+
+https://bbs.archlinux.org/viewtopic.php?pid=2035351#p2035351
+
+https://wiki.archlinux.org/title/GDM#Wayland_and_the_proprietary_NVIDIA_driver
+
+https://wiki.archlinux.org/title/NVIDIA/Tips_and_tricks#Preserve_video_memory_after_suspend ..?
+
+
+### Reboot
+
 Reboot to test GDM boot.
+
 
 ## Setup in GNOME
 
@@ -182,6 +218,19 @@ sudo grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=Fresh
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 sudo mkinitcpio -P
 ````
+
+Example overrides in `/etc/default/grub`:
+
+```
+GRUB_DEFAULT=saved
+GRUB_SAVEDEFAULT=true
+GRUB_TIMEOUT=5
+GRUB_DISTRIBUTOR="Arch"
+GRUB_CMDLINE_LINUX_DEFAULT=""
+GRUB_CMDLINE_LINUX="i915.enable_psr=1 i915.fastboot=1 i915.enable_guc=2 acpi_osi=Linux rd.luks.name=596d8feb-77bb-4b1d-afea-b53d5bef668f=cryptroot nvidia-drm.modeset=1"
+
+GRUB_DISABLE_OS_PROBER=false
+```
 
 ### systemd-boot
 
