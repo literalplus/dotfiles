@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+gnome-terminal -- zsh -c 'source ~/.zshrc && k9s'

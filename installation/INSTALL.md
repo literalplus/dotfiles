@@ -95,7 +95,8 @@ Reboot to test GDM boot.
 * `Super+R -> gnome-terminal`
 * `Super+V -> copyq toggle`
 * `Super+Y -> rofi-window`
-* `Super+F -> context-select-k9s`
+* `Super+Shift+F -> context-select-k9s`
+* `Super+F -> keyboard-shortcut-k9s`
 
 Disable conflicting Ctrl-Shift-U shortcut in `ibus-setup` utility (Install `ibus` for this).
 
