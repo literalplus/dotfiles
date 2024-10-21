@@ -17,7 +17,7 @@ cp "$MIRRORS" "$MIRRORBKP"
 pnot "Mirror list backup placed at $MIRRORBKP"
 pnot "List-to-rank is at $MIRRORSWAP"
 sed -i 's/^#Server/Server/' "$MIRRORSWAP"
-confirmbefore rankmirrors -n 6 "$MIRRORSWAP" \> "$MIRRORS"
+confirmbefore_unsafe_eval rankmirrors -n 6 "$MIRRORSWAP" \> "$MIRRORS"
 dim
 grep -v "#" < "$MIRRORS"
 undim

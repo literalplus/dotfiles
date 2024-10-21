@@ -90,7 +90,7 @@ Reboot to test GDM boot.
 * `Audio play -> dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause`
 * `Print -> screenwrap-open /tmp/ viewnior -a`
 * `Shift+Print -> screenwrap-open /home/lit/Screenshots/ viewnior -a`
-* `Ctrl+Print -> flameshot gui`
+* `Ctrl+Print -> /usr/local/bin/keyboard-shortcut-flameshot`
 * `Super+X -> albert toggle`
 * `Super+R -> gnome-terminal`
 * `Super+V -> copyq toggle`
@@ -116,6 +116,29 @@ Disable conflicting Ctrl-Shift-U shortcut in `ibus-setup` utility (Install `ibus
  * Telegram
  * Desktop background
  * IDE, Maven, NPM
+
+### Podman
+
+https://wiki.archlinux.org/title/Podman
+
+```bash
+yay -Syu podman buildah podman-docker
+```
+
+File `$HOME/.config/containers/registries.conf`:
+
+```
+unqualified-search-registries = ["docker.io"]
+
+[[registry]]
+location = "docker.io"
+
+[[registry.mirror]]
+location = "docker-mirror.internal.cloudflight.io"
+
+[[registry.mirror]]
+location = "mirror.gcr.io"
+```
 
 ### Docker
 
