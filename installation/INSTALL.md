@@ -93,7 +93,7 @@ Reboot to test GDM boot.
 * `Ctrl+Print -> /usr/local/bin/keyboard-shortcut-flameshot`
 * `Super+X -> albert toggle`
 * `Super+R -> gnome-terminal`
-* `Super+V -> copyq toggle`
+* `Super+V -> /usr/local/bin/keyboard-shortcut-copyq`
 * `Super+Y -> rofi-window`
 * `Super+Shift+F -> context-select-k9s`
 * `Super+F -> keyboard-shortcut-k9s`
@@ -111,7 +111,7 @@ Disable conflicting Ctrl-Shift-U shortcut in `ibus-setup` utility (Install `ibus
 ### Set up applications
 
  * Chrome
- * Albert
+ * Albert - Enable plugins: CopyQ (no paste), Calculator, Emoji (no paste), Files, Python, Applications
  * Nextcloud
  * Telegram
  * Desktop background
@@ -272,8 +272,5 @@ Doesn't work atm:
  * copyq
  * pretty much anything that tries to paste
 
-Emoji can be enabled in Albert, but the pasting is broken. It has a check for copy/paste support, but it doesn't trigger correctly, so would need a custom workaround to force-disable pasting. Then at least adding to the clipboard works.
+Need to enable custom plugins in Albert for now.
 
- -> Replace `havePasteSupport()` with `havePasteSupport() and False` in `usr/share/albert/python/plugins/emoji`
-
-https://github.com/albertlauncher/python/blob/main/emoji/__init__.py

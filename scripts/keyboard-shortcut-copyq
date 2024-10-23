@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+zsh -c 'albert show "cp "'

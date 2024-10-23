@@ -1,13 +1,3 @@
 #!/usr/bin/env bash
 
-UUIDS="$(uuidgen)"$'\n'"\"$(uuidgen)\""$'\n'"UUID.fromString(\"$(uuidgen)\")"
-
-
-if SELECTED=$(echo "${UUIDS}" | rofi -width 25 -lines 7 -dmenu -i -p 'uuid' -sep $'\n'); then
-  echo -n "${SELECTED}" | xclip -i -selection primary
-  xclip -o -selection primary | xclip -i -selection clipboard
-  echo "Selected: ${SELECTED}"
-else
-  echo "Canceled."
-fi
-
+zsh -c 'albert show "uuid()"'
