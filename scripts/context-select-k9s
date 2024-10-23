@@ -3,7 +3,7 @@
 CHOICES_RAW=$(kubectl config get-contexts | tr -s ' ' | cut -f2 -d' ' | tail -n '+2')
 CHOICES=$(echo "$CHOICES_RAW" | sed 's/^dev$/dev-internal/;s/^test$/test-internal/;s/^prod$/prod-internal/')
 
-if SELECTION_RAW=$(echo "$CHOICES" | rofi -width 25 -lines 7 -dmenu -i -p 'ctx' -sep $'\n' -matching fuzzy); then
+if SELECTION_RAW=$(echo "$CHOICES" | fzfmenu); then
   SELECTION=$(echo "$SELECTION_RAW" | sed 's/^dev-internal$/dev/;s/^test-internal$/test/;s/^prod-internal$/prod/')
   echo "$SELECTION"
   gnome-terminal -- k9s-context "$SELECTION"

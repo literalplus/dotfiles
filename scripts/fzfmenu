@@ -1,0 +1,2 @@
+#!/bin/sh
+gnome-terminal -- sh -c "fzf  < /proc/$$/fd/0 > /proc/$$/fd/1"
