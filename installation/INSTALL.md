@@ -264,3 +264,16 @@ sudo mkinitcpio -P
 # Secure Boot / PreLoader
 sudo cp /boot/EFI/systemd/systemd-bootx64.efi /boot/EFI/systemd/loader.efi
 ```
+
+### Wayland workarounds etc.
+
+Doesn't work atm:
+ * rofi
+ * copyq
+ * pretty much anything that tries to paste
+
+Emoji can be enabled in Albert, but the pasting is broken. It has a check for copy/paste support, but it doesn't trigger correctly, so would need a custom workaround to force-disable pasting. Then at least adding to the clipboard works.
+
+ -> Replace `havePasteSupport()` with `havePasteSupport() and False` in `usr/share/albert/python/plugins/emoji`
+
+https://github.com/albertlauncher/python/blob/main/emoji/__init__.py

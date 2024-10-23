@@ -9,8 +9,25 @@ fi
 psec "Installing standard scripts to /usr/local/bin"
 pushd scripts >/dev/null || exit
 for script in *; do
+  if ! [[ -f $script ]]; then
+    continue
+  fi
   sudo bash -c "source $PWD/../lib.sh && applycp \"$script\" \"/usr/local/bin/$script\" overwrite"
 done
+
+psec "Installing standard Albert plugins to /usr/share/albert/python/plugins"
+pushd albert-python >/dev/null || exit
+
+for plugin in *; do
+  if [[ $plugin =~ (.*).py ]]; then
+    rawname=${BASH_REMATCH[1]}
+    target="/usr/share/albert/python/plugins/$rawname"
+    sudo mkdir -p "$target"
+    sudo bash -c "source $PWD/../../lib.sh && applycp \"$plugin\" \"$target/__init__.py\" overwrite"
+  fi
+done
+
+popd >/dev/null || exit
 popd >/dev/null || exit
 
 psec "Installing standard systemd unit files"
@@ -82,7 +99,7 @@ if [ "$PERSONAL" -eq 0 ]; then
 fi
 
 psec "Firewall (nftables)"
-sudo bash -c "source $PWD/../lib.sh && applycp installation/nftables.conf /etc/nftables.conf"
+sudo bash -c "source $PWD/lib.sh && applycp installation/nftables.conf /etc/nftables.conf"
 
 psec "Workarounds"
 # none atm !
