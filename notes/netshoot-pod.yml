@@ -1,0 +1,37 @@
+---
+# socat tcp-listen:1433,fork,reuseaddr tcp-connect:sqlserver:1433
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: proxy
+  name: temp-debug-proxy
+spec:
+  containers:
+  - image: docker.io/nicolaka/netshoot:latest
+    imagePullPolicy: Always
+    name: netshoot
+    ports:
+    - containerPort: 8080
+      protocol: TCP
+    - containerPort: 1337
+      protocol: TCP
+    resources:
+      limits:
+        cpu: 100m
+        memory: 265Mi
+      requests:
+        cpu: 100m
+        memory: 265Mi
+    volumeMounts:
+        - mountPath: /opt/ca-certs
+          name: ca-certs
+    securityContext:
+      allowPrivilegeEscalation: false
+    stdin: true
+    stdinOnce: true
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    tty: true
+  restartPolicy: Never
+  schedulerName: default-scheduler
