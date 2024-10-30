@@ -265,12 +265,29 @@ sudo mkinitcpio -P
 sudo cp /boot/EFI/systemd/systemd-bootx64.efi /boot/EFI/systemd/loader.efi
 ```
 
-### Wayland workarounds etc.
+### Wayland Flameshot issues
 
-Doesn't work atm:
- * rofi
- * copyq
- * pretty much anything that tries to paste
+Most things don't matter, but what does is that this command has exactly one result for flameshot lowercase, and none unqualified:
 
-Need to enable custom plugins in Albert for now.
+```bash
+$ dbus-send --session --print-reply=literal --dest=org.freedesktop.impl.portal.PermissionStore /org/freedesktop/impl/portal/PermissionStore org.freedesktop.impl.portal.PermissionStore.Lookup string:'screenshot' string:'screenshot'
+   array [
+      dict entry(
+                  array [
+            yes         ]
+      )
+   ]
+   variant       byte 0
+```
 
+That would be correct.
+
+Cleanup of excess entries is possible:
+
+```bash
+dbus-send --session --print-reply=literal --dest=org.freedesktop.impl.portal.PermissionStore /org/freedesktop/impl/portal/PermissionStore org.freedesktop.impl.portal.PermissionStore.DeletePermission string:'screenshot' string:'screenshot' string:''
+```
+
+Once it is missing (or at least definitely not set to 'no') then the permission prompt
+should actually appear. `env QT_QPA_PLATFORM=wayland` in the `.application` file might have
+helped with that, but probably not.
