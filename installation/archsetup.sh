@@ -105,22 +105,9 @@ confirmbefore mount /dev/mapper/cryptroot /mnt
 destcmd mkdir -p /mnt/boot
 confirmbefore mount "$EFI_PART" /mnt/boot
 
-psec "Actual installation"
-MIRRORS="/etc/pacman.d/mirrorlist"
-if [ -n "$DRY_RUN" ]; then
-  cp /etc/pacman.d/mirrorlist /tmp/mirrorlist
-  MIRRORS="/tmp/mirrorlist"
-fi
-MIRRORSWAP="$MIRRORS.rankinstall"
-cp "$MIRRORS" "$MIRRORS.backup"
-curl -s "https://archlinux.org/mirrorlist/?country=AT&country=CZ&country=DE&country=SK&country=SI&protocol=https&ip_version=4&use_mirror_status=on" >"$MIRRORSWAP"
-pnot "Mirror list backup placed at $MIRRORS.backup"
-sed -i 's/^#Server/Server/' "$MIRRORSWAP"
-confirmbefore_unsafe_eval rankmirrors -n 6 "$MIRRORSWAP" \> "$MIRRORS"
-dim
-cat "$MIRRORS"
-undim
+./setupmirrors.sh || exit 5
 
+psec "Actual installation"
 destcmd pacstrap /mnt base linux linux-firmware vim fzf zsh sudo which git nftables iptables-nft base-devel tmux go
 
 psec "Configure the system"
