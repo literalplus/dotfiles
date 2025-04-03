@@ -4,8 +4,8 @@ import uuid
 
 from albert import *
 
-md_iid = '2.4'
-md_version = "0.1"
+md_iid = '3.0'
+md_version = "0.2"
 md_name = "UUID Generator"
 md_description = "Find and copy emojis by name but don't paste them"
 md_license = "MIT"
@@ -17,10 +17,10 @@ class Plugin(PluginInstance, TriggerQueryHandler):
 
     def __init__(self):
         PluginInstance.__init__(self)
-        TriggerQueryHandler.__init__(
-            self, self.id, self.name, self.description,
-            defaultTrigger='uuid()'
-        )
+        TriggerQueryHandler.__init__(self)
+
+    def defaultTrigger(self):
+        return 'uuid()'
 
     def handleTriggerQuery(self, query):
         uid = str(uuid.uuid4())
