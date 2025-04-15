@@ -171,6 +171,35 @@ function browse-pacman {
   pacman -Qq | fzf --preview 'pacman -Qil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'
 }
 
+decode_k8s_secrets() {
+  if [ -z "$1" ]; then
+    echo "Usage: decode_k8s_secrets SEARCH_STRING"
+    return 1
+  fi
+
+  SEARCH_STRING=$1
+  echo "Searching for Kubernetes Secrets matching: $SEARCH_STRING"
+
+  # Get all secrets matching the search string
+  SECRETS=$(kubectl get secret | grep "$SEARCH_STRING" | awk '{print $1}')
+
+  if [ -z "$SECRETS" ]; then
+    echo "No Kubernetes Secrets found matching: $SEARCH_STRING"
+    return 1
+  fi
+
+  # Use fzf to select a secret interactively
+  SELECTED_SECRET=$(echo "$SECRETS" | fzf --prompt="Select a secret to decode: ")
+
+  if [ -z "$SELECTED_SECRET" ]; then
+    echo "No secret selected. Exiting."
+    return 1
+  fi
+
+  echo "Decoding data from secret: $SELECTED_SECRET"
+  kubectl get secret "$SELECTED_SECRET" -o yaml | yq '.data |= with_entries(.value |= @base64d)'
+}
+
 
 # Automatic appends below this line
 
