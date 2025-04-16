@@ -151,7 +151,7 @@ function sparkle {
 
 function prepend-sudo {
   if [[ $BUFFER != "sudo "* ]]; then
-    BUFFER="sudo $BUFFER"; CURSOR+=5
+    BUFFER="sudo $BUFFER"; CURSOR+="5"
   fi
 }
 zle -N prepend-sudo
@@ -163,7 +163,7 @@ function cargo-pager {
 }
 
 function kubeseal-it {
-  kubeseal -f $1 -o yaml -w $1
+  kubeseal -f "$1" -o yaml -w "$1"
 }
 
 function browse-pacman {
