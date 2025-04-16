@@ -90,6 +90,9 @@ F2B_CONF_NAME="fail2ban-sshd-dotfiles.conf"
 sudo bash -c "source $PWD/lib.sh && applycp \"base/$F2B_CONF_NAME\" \"/etc/fail2ban/jail.d/$F2B_CONF_NAME\" overwrite"
 sudo systemctl enable fail2ban
 
+pnot "Enable pacman cache cleanup"
+sudo systemctl enable paccache.timer
+
 psec "Code packages"
 confirmbefore yayfromfile code
 
