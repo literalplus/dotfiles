@@ -30,6 +30,8 @@ gnome-screenshot
 gnome-session
 gnome-shell
 gnome-shell-extensions
+gnome-shell-extension-appindicator
+gnome-shell-extension-dash-to-dock
 gnome-terminal
 gnome-todo
 gnome-tweaks
