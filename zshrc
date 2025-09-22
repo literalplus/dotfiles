@@ -4,6 +4,7 @@
 
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
+export PATH=$PATH:$HOME/.cargo/bin
 
 if which go >/dev/null 2>&1; then
   MY_OWN_GOPATH="$(go env GOPATH)"
