@@ -13,8 +13,8 @@ from pathlib import Path
 
 from albert import *
 
-md_iid = '3.0'
-md_version = "3.0"
+md_iid = '4.0'
+md_version = "4.0"
 md_name = "Emoji (no paste)"
 md_description = "Find and copy emojis by name but don't paste them"
 md_license = "MIT"
@@ -33,12 +33,12 @@ class Plugin(PluginInstance, IndexQueryHandler):
         if self._use_derived is None:
             self._use_derived = False
 
-    def defaultTrigger(self):
-        return ':'
-
     def __del__(self):
         if self.thread and self.thread.is_alive():
             self.thread.join()
+
+    def defaultTrigger(self):
+        return ':'
 
     @property
     def use_derived(self):
@@ -162,8 +162,10 @@ class Plugin(PluginInstance, IndexQueryHandler):
                 json_derived = json.load(file_derived)['annotationsDerived']['annotations']
                 return json_full | json_derived
 
-        emojis = get_fully_qualified_emojis(self.cacheLocation())
-        annotations = get_annotations(self.cacheLocation(), self.use_derived)
+        cache_location = self.cacheLocation()
+        cache_location.mkdir(parents=True, exist_ok=True)
+        emojis = get_fully_qualified_emojis(cache_location)
+        annotations = get_annotations(cache_location, self.use_derived)
 
         def remove_redundancy(sentences):
             sets_of_words = [set(sentence.lower().split()) for sentence in sentences]
@@ -190,7 +192,10 @@ class Plugin(PluginInstance, IndexQueryHandler):
                     continue
 
             title = ann['tts'][0]
-            aliases = remove_redundancy([title.replace(':', '').replace(',', ''), *ann['default']])
+            title = title[:1].upper() + title[1:]  # capitalize first letter
+            aliases = remove_redundancy([title.replace(':', '').replace(',', ''),
+                                         *[a[:1].upper() + a[1:] for a in ann['default']]])  # capitalize first letter
+            aliases = [a for a in aliases if a.lower() != title.lower()]  # remove title from aliases
 
             actions = []
             if havePasteSupport() and False:  # changed ... paste support is broken on Wayland atm
@@ -210,12 +215,13 @@ class Plugin(PluginInstance, IndexQueryHandler):
 
             item = StandardItem(
                 id=emoji,
-                text=title.capitalize(),
-                subtext=", ".join([a.capitalize() for a in aliases]),
-                iconUrls=[f"gen:?text={emoji}"],
+                text=title,
+                subtext=", ".join(aliases),
+                icon_factory=lambda emo=emoji: makeGraphemeIcon(emo),
                 actions=actions
             )
 
+            index_items.append(IndexItem(item=item, string=title))
             for alias in aliases:
                 index_items.append(IndexItem(item=item, string=alias))
 
