@@ -29,3 +29,39 @@ cp /usr/share/efitools/efi/KeyTool.efi /boot/EFI/systemd/KeyTool.efi
 
 This setup only signs the preloader and enrols the hash of the boot loader.
 The kernel and initrams are in no way verified.
+
+## secure boot fixing 2025-11-13
+
+boot via preloader -> debian live
+
+hold space to enter menu
+
+```
+cryptsetup open /dev/nvme...p2 cryptroot
+mount /dev/mapper/cryptroot /mnt
+mount /dev/nvme...p1 /mnt/boot
+apt install arch-install-scripts
+arch-chroot /mnt
+
+sudo -u pnowak -i
+git clone ...shim-signed AUR
+cd shim-signed
+makepkg -si
+cp /boot/EFI/BOOT/BOOTx64.EFI grubx64.efi # shim requires this, actually systemd-boot
+cp /usr/share/shim-signed/shimx64.efi .
+cp /usr/share/shim-signed/mmx64.efi .
+efibootmgr --unicode --disk /dev/nvme.. --part 1 --create --label "Shim" --loader /EFI/BOOT/shimx64.efi
+
+# Delete the sbctl keys at /var/lib/sbctl ...
+pacman -Sy linux linux-firmware
+```
+
+rescue systems:
+
+`archiso-systemd-boot` -> this doesn't have Secure Boot support so must be loaded via shim/preloader ... anyways it's too big ~1.2Gi
+
+https://wiki.archlinux.org/title/Systemd-boot#Recovery_Arch_image_on_the_ESP_with_Secure_Boot
+
+https://codeberg.org/swsnr/rescue-image -> `yay -Sy mkosi systemd-ukify cpio`
+
+-> https://github.com/literalplus/archlinux-rescue-image-fork
