@@ -4,7 +4,7 @@ import uuid
 
 from albert import *
 
-md_iid = '3.0'
+md_iid = '4.0'
 md_version = "0.2"
 md_name = "UUID Generator"
 md_description = "Find and copy emojis by name but don't paste them"
@@ -32,7 +32,7 @@ class Plugin(PluginInstance, TriggerQueryHandler):
             items.append(
                 StandardItem(
                     id=fmt,
-                    iconUrls=["gen:?text=🪪"],
+                    icon_factory=lambda emo=fmt: makeGraphemeIcon("🪪"),
                     text=fmt,
                     actions=[
                         Action("copy", "Copy", lambda x=fmt: setClipboardText(x)),
