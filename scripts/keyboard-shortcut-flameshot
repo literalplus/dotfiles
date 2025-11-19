@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
+# Fix GNOME/Wayland issue where it always tries to screenshot the leftmost monitor instead of what is selected
+export QT_QPA_PLATFORM=xcb
 zsh -c 'flameshot gui'
