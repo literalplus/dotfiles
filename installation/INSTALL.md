@@ -88,8 +88,8 @@ Reboot to test GDM boot.
 * `Audio next -> dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next`
 * `Audio previous -> dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous`
 * `Audio play -> dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause`
-* `Print -> screenwrap-open /tmp/ viewnior -a`
-* `Shift+Print -> screenwrap-open /home/lit/Screenshots/ viewnior -a`
+* `Print ->` Leave unbound, use the built-in "Screenshot" operation from GNOME. Annotations not possible...
+* `Shift+Print ->` Leave unbound
 * `Ctrl+Print -> /usr/local/bin/keyboard-shortcut-flameshot`
 * `Super+X -> albert toggle`
 * `Super+R -> gnome-terminal`
