@@ -107,6 +107,12 @@ function choosecont() {
   fi
 }
 
+function choosecont-rootful() {
+  if LINE=$(sudo podman ps | fzf --header-lines=1); then
+    echo "$LINE" | xargs | cut -d" " -f1
+  fi
+}
+
 function rmcont() {
   if CID=$(choosecont); then
     echo "No container chosen."
@@ -129,6 +135,15 @@ function shcont() {
     echo "No container chosen."
   else
     docker exec -it "$CID" /bin/sh -c "/bin/bash || /bin/sh || /bin/sh"
+  fi
+}
+
+function shcont-rootful() {
+  CID=$(choosecont-rootful)
+  if [[ -z "$CID" ]]; then
+    echo "No container chosen."
+  else
+    sudo podman exec -it "$CID" /bin/sh -c "/bin/bash || /bin/sh || /bin/sh"
   fi
 }
 
