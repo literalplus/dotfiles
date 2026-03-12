@@ -4,13 +4,13 @@ import uuid
 
 from albert import *
 
-md_iid = '4.0'
-md_version = "0.2"
+md_iid = '5.0'
+md_version = "0.3"
 md_name = "UUID Generator"
 md_description = "Find and copy emojis by name but don't paste them"
 md_license = "MIT"
 md_url = "https://github.com/literalplus/dotfiles/tree/main/scripts/albert-python/wayland-uuid.py"
-md_authors = "@literalplus"
+md_authors = ["@literalplus"]
 
 
 class Plugin(PluginInstance, TriggerQueryHandler):

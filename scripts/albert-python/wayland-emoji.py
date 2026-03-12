@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright (c) 2024 Manuel Schneider
-### Stolen from https://github.com/albertlauncher/python/blob/main/emoji/__init__.py (MIT) and
+### Stolen from https://github.com/albertlauncher/albert-plugin-python-emoji/tree/main (MIT) and
 ### slightly adjusted to not try pasting, as this causes weird popups on GNOME
 
 import json
@@ -13,13 +13,13 @@ from pathlib import Path
 
 from albert import *
 
-md_iid = '4.0'
-md_version = "4.0"
+md_iid = '5.0'
+md_version = "5.0"
 md_name = "Emoji (no paste)"
 md_description = "Find and copy emojis by name but don't paste them"
 md_license = "MIT"
 md_url = "https://github.com/literalplus/dotfiles/tree/main/scripts/albert-python/wayland-emoji.py"
-md_authors = "@manuelschneid3r"
+md_authors = ["@manuelschneid3r", "@literalplus"]
 
 
 class Plugin(PluginInstance, IndexQueryHandler):
@@ -217,7 +217,7 @@ class Plugin(PluginInstance, IndexQueryHandler):
                 id=emoji,
                 text=title,
                 subtext=", ".join(aliases),
-                icon_factory=lambda emo=emoji: makeGraphemeIcon(emo),
+                icon_factory=lambda emo=emoji: Icon.grapheme(emo),
                 actions=actions
             )
 
